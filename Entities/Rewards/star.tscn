@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://xbxprfstanvq"]
+
+[ext_resource type="Script" uid="uid://bec7qxakyv1lm" path="res://Entities/Rewards/star.gd" id="1_c2nvm"]
+[ext_resource type="Texture2D" uid="uid://2yhk2f4jg1nh" path="res://templateSquare.png" id="1_sfpk7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sfpk7"]
+size = Vector2(32.526917, 32.526917)
+
+[sub_resource type="Animation" id="Animation_c2nvm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.7853982]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Area2D/CollisionShape2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.7853982]
+}
+
+[sub_resource type="Animation" id="Animation_t2etv"]
+resource_name = "Spin"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.7853982, -0.7853982]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Area2D/CollisionShape2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.7853982, -0.7853982]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bffxc"]
+_data = {
+&"RESET": SubResource("Animation_c2nvm"),
+&"Spin": SubResource("Animation_t2etv")
+}
+
+[node name="Star" type="Node2D" unique_id=104710790]
+script = ExtResource("1_c2nvm")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=225787064]
+modulate = Color(0.7176471, 0.7137255, 0.21568628, 1)
+rotation = 0.7853982
+texture = ExtResource("1_sfpk7")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1771096692]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1411190054]
+position = Vector2(-7.1525574e-07, -7.1525574e-07)
+rotation = 0.7853982
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_sfpk7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2070445759]
+libraries/ = SubResource("AnimationLibrary_bffxc")
+autoplay = &"Spin"
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

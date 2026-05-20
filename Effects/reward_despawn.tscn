@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://cuaw2u5isbo8s"]
+
+[ext_resource type="Texture2D" uid="uid://2yhk2f4jg1nh" path="res://templateSquare.png" id="1_nf4ae"]
+[ext_resource type="Script" uid="uid://besh5w4cgr64b" path="res://Effects/reward_despawn.gd" id="1_xi3f5"]
+
+[sub_resource type="Curve" id="Curve_nf4ae"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.014207458, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_xi3f5"]
+curve = SubResource("Curve_nf4ae")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xi3f5"]
+lifetime_randomness = 0.52
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+initial_velocity_max = 958.8
+gravity = Vector3(0, 2000, 0)
+scale_curve = SubResource("CurveTexture_xi3f5")
+
+[node name="RewardDespawn" type="Node2D" unique_id=324754526]
+script = ExtResource("1_xi3f5")
+
+[node name="Particles" type="GPUParticles2D" parent="." unique_id=1944715035]
+modulate = Color(0.7176471, 0.7137255, 0.21568628, 1)
+texture = ExtResource("1_nf4ae")
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_xi3f5")
+
+[node name="Timer" type="Timer" parent="." unique_id=1625178567]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[connection signal="finished" from="Particles" to="." method="_on_particles_finished"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

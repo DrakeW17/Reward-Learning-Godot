@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://d1dfq0nifyccg"]
+
+[ext_resource type="Script" uid="uid://dj1clnp8yu0i3" path="res://Entities/Player/player.gd" id="1_3uyv8"]
+[ext_resource type="Texture2D" uid="uid://2yhk2f4jg1nh" path="res://templateSquare.png" id="1_mv1ah"]
+[ext_resource type="FontFile" uid="uid://bht0gsdsgl50i" path="res://Assets/UI/Fonts/BasicPixel.ttf" id="3_lu8i8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mv1ah"]
+size = Vector2(30, 30)
+
+[sub_resource type="Curve" id="Curve_lu8i8"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.42458063, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_tekja"]
+curve = SubResource("Curve_lu8i8")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5c2io"]
+lifetime_randomness = 0.63
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(9, 4, 0)
+emission_shape = 3
+emission_box_extents = Vector3(15, 9, 0)
+radial_velocity_min = 271.42996
+radial_velocity_max = 399.99997
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_tekja")
+
+[node name="Player" type="CharacterBody2D" unique_id=1511582234]
+collision_layer = 2
+script = ExtResource("1_3uyv8")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=672865668]
+texture = ExtResource("1_mv1ah")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1269127725]
+shape = SubResource("RectangleShape2D_mv1ah")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1341731852]
+zoom = Vector2(2.7, 2.7)
+position_smoothing_enabled = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=743367543]
+
+[node name="Score" type="RichTextLabel" parent="CanvasLayer" unique_id=725543022]
+offset_left = 51.0
+offset_top = 34.0
+offset_right = 1022.0
+offset_bottom = 311.0
+theme_override_fonts/normal_font = ExtResource("3_lu8i8")
+theme_override_font_sizes/normal_font_size = 75
+text = "Score: 0"
+
+[node name="ScoreIncreaseParticles" type="GPUParticles2D" parent="CanvasLayer" unique_id=835851950]
+position = Vector2(181, 63)
+emitting = false
+amount = 20
+sub_emitter = NodePath(".")
+texture = ExtResource("1_mv1ah")
+lifetime = 0.54
+one_shot = true
+explosiveness = 0.91
+process_material = SubResource("ParticleProcessMaterial_5c2io")
