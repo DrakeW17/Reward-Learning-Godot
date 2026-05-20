@@ -10,16 +10,15 @@ const situationLength = 640
 # The number of situations to place
 const situationAmount = 10
 
-# The pool of situations
-var situationPool = []
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# The pool of current possible situations
+	var situationPool = situations.duplicate()
 	# Places the situations
 	for p in range(situationAmount):
 		# Refills the situation pool if all situations have been used
 		if situationPool.size() == 0:
-			situationPool = situations
+			situationPool = situations.duplicate()
 		# Selects a random situation from the situation pool
 		var situationID = randi() % situationPool.size()
 		# Spawns the situation chosen
