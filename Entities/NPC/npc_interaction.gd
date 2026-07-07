@@ -1,29 +1,26 @@
 extends Node2D
 
-@onready var Animations = $AnimationPlayer
-var AnimationPlayed = false
+@onready var animations = $AnimationPlayer
+var emergePlayed = false
 
-@onready var Sprites = [$Goblin, $Archer, $Angel]
-@export var Type = 0
-@export var Power = 0
+@onready var sprites = [$Goblin, $Archer, $Angel]
+@export var type = 0
+@export var power = 0
 
-@onready var DeathTimer = $DeathTimer
-
-var Player
+@onready var deathTimer = $DeathTimer
 
 func _ready() -> void:
-	Sprites[Type].visible = true
+	sprites[type].visible = true
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if not AnimationPlayed:
-		Animations.play("emerge")
-		Player = body
-		AnimationPlayed = true
+	if not emergePlayed:
+		animations.play("emerge")
+		emergePlayed = true
 
 
 func _on_timer_timeout() -> void:
-	Sprites[Type].play("no_interaction")
+	sprites[type].play("no_interaction")
 
 
 func _on_sprite_animation_finished() -> void:
@@ -31,7 +28,7 @@ func _on_sprite_animation_finished() -> void:
 
 
 func _on_interaction_body_entered(body: Node2D) -> void:
-	DeathTimer.stop()
-	Sprites[Type].play("interaction")
+	deathTimer.stop()
+	sprites[type].play("interaction")
 	$Interaction.queue_free()
-	body.score += int(pow(5, Power) * (Type - 1))
+	body.score += int(pow(5, power) * (type - 1))
