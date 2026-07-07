@@ -15,7 +15,7 @@ var emergePlayed = false
 # Reference to the death timer
 @onready var deathTimer = $DeathTimer
 
-func _ready() -> void:
+func Set() -> void:
 	# Sets the correct sprite depending on the type
 	sprites[type].visible = true
 
