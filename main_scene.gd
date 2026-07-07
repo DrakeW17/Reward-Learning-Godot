@@ -20,17 +20,4 @@ func _ready() -> void:
 		var transitionInstance = transitionSituations[randi() % transitionSituations.size()].instantiate()
 		transitionInstance.global_position.x = (p * 2 + 1) * situationLength
 		add_child(transitionInstance)
-	
-	#for p in range(situationAmount):
-		## Refills the situation pool if all situations have been used
-		#if situationPool.size() == 0:
-			#situationPool = situations.duplicate()
-		## Selects a random situation from the situation pool
-		#var situationID = randi() % situationPool.size()
-		## Spawns the situation chosen
-		#var instance = situationPool[situationID].instantiate()
-		#instance.global_position.x = p * situationLength
-		#add_child(instance)
-		## Removes the situation from the situation pool
-		#situationPool.remove_at(situationID)
 		
