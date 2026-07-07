@@ -13,7 +13,6 @@ func _ready() -> void:
 		interactionInstance.global_position.x = p * situationLength * 2
 		add_child(interactionInstance)
 		DataManager.placedInteractions.append(interactionInstance)
-		
 		#Loads in one transition after this interaction
 		var transitionInstance = transitionSituations[randi() % transitionSituations.size()].instantiate()
 		transitionInstance.global_position.x = (p * 2 + 1) * situationLength
