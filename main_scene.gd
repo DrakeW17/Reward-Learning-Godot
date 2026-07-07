@@ -5,7 +5,7 @@ extends Node2D
 # The possible situations
 const situations = [preload("res://Levels/test_scene.tscn"),preload("res://Levels/situation_1.tscn")]
 # The width of one situation
-const situationLength = 640
+const situationLength = 320
 
 # The number of situations to place
 const situationAmount = 10
@@ -27,4 +27,5 @@ func _ready() -> void:
 		add_child(instance)
 		# Removes the situation from the situation pool
 		situationPool.remove_at(situationID)
+		print(situationPool.size())
 		

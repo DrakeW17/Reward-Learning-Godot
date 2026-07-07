@@ -1,16 +1,16 @@
 extends CharacterBody2D
 
 #The friction (acts as an involuntary deceleration)
-var friction = 1200
+var friction = 600
 #The strength of gravity on the player
-var gravity = 2000
+var gravity = 1000
 
 #The acceleration of the player's movement
-var acceleration = 1100 + friction
+var acceleration = 550 + friction
 #The maximum speed the player can achieve via standerd movement
-var maxSpeed = 300
+var maxSpeed = 150
 #The jump strength of the player
-var jumpStrength = 500
+var jumpStrength = 250
 #The player's inability to move while in the air (lower = more control) 
 var airControl = 0.8
 

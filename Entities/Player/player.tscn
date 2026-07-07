@@ -5,7 +5,7 @@
 [ext_resource type="FontFile" uid="uid://bht0gsdsgl50i" path="res://Assets/UI/Fonts/BasicPixel.ttf" id="3_lu8i8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mv1ah"]
-size = Vector2(30, 30)
+size = Vector2(14, 14)
 
 [sub_resource type="Curve" id="Curve_lu8i8"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.42458063, 0.0, 0, 0]
@@ -30,13 +30,15 @@ collision_layer = 2
 script = ExtResource("1_3uyv8")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=672865668]
+position = Vector2(0, 2.3841858e-07)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_mv1ah")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1269127725]
 shape = SubResource("RectangleShape2D_mv1ah")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1341731852]
-zoom = Vector2(2.7, 2.7)
+zoom = Vector2(5.4, 5.4)
 position_smoothing_enabled = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=743367543]

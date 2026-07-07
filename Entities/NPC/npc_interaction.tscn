@@ -1,0 +1,163 @@
+[gd_scene format=3 uid="uid://bgnpg13b2qa8f"]
+
+[ext_resource type="Texture2D" uid="uid://2yhk2f4jg1nh" path="res://templateSquare.png" id="1_1w8o4"]
+[ext_resource type="Script" uid="uid://dt8yxpfhsa5lp" path="res://Entities/NPC/npc_interaction.gd" id="1_qfqsu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_iyypf"]
+radius = 200.0
+
+[sub_resource type="Animation" id="Animation_qfqsu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Bush:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Bush:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Bush:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -16)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("NPC:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.6940659e-21, -14.000002)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("NPC:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.625, 0.8749999)]
+}
+
+[sub_resource type="Animation" id="Animation_e14d7"]
+resource_name = "emerge"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Bush:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Bush:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.869, 1.156), Vector2(2, 1e-05)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Bush:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -16), Vector2(0, -18), Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("NPC:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1.6940659e-21, -14.000002), Vector2(1.6940659e-21, -14.000002), Vector2(1.6940659e-21, -26.500004)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("NPC:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.625, 0.8749999), Vector2(0.625, 0.8749999), Vector2(0.625, 1.6562499)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tafgp"]
+_data = {
+&"RESET": SubResource("Animation_qfqsu"),
+&"emerge": SubResource("Animation_e14d7")
+}
+
+[node name="NPC_interaction" type="Node2D" unique_id=1385599342]
+script = ExtResource("1_qfqsu")
+
+[node name="Bush" type="Sprite2D" parent="." unique_id=1833715438]
+position = Vector2(0, -16)
+texture = ExtResource("1_1w8o4")
+
+[node name="NPC" type="Sprite2D" parent="." unique_id=1140000766]
+position = Vector2(1.6940659e-21, -14.000002)
+scale = Vector2(0.625, 0.8749999)
+texture = ExtResource("1_1w8o4")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1972915413]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=613861623]
+shape = SubResource("CircleShape2D_iyypf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=48384430]
+libraries/ = SubResource("AnimationLibrary_tafgp")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
