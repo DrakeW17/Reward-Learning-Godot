@@ -4,7 +4,10 @@
 [ext_resource type="Script" uid="uid://dt8yxpfhsa5lp" path="res://Entities/NPC/npc_interaction.gd" id="1_qfqsu"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_iyypf"]
-radius = 200.0
+radius = 109.76794
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iyypf"]
+size = Vector2(32, 32)
 
 [sub_resource type="Animation" id="Animation_qfqsu"]
 length = 0.001
@@ -43,30 +46,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0, -16)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("NPC:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1.6940659e-21, -14.000002)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("NPC:scale")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.625, 0.8749999)]
 }
 
 [sub_resource type="Animation" id="Animation_e14d7"]
@@ -108,29 +87,19 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector2(0, -16), Vector2(0, -18), Vector2(0, 0)]
 }
-tracks/3/type = "value"
+tracks/3/type = "method"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("NPC:position")
+tracks/3/path = NodePath("DeathTimer")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(1.6940659e-21, -14.000002), Vector2(1.6940659e-21, -14.000002), Vector2(1.6940659e-21, -26.500004)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("NPC:scale")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(0.625, 0.8749999), Vector2(0.625, 0.8749999), Vector2(0.625, 1.6562499)]
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [-1],
+"method": &"start"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tafgp"]
@@ -139,25 +108,116 @@ _data = {
 &"emerge": SubResource("Animation_e14d7")
 }
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_qfqsu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_1w8o4")
+}],
+"loop": 0,
+"name": &"interaction",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_1w8o4")
+}],
+"loop": 0,
+"name": &"no_interaction",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e14d7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_1w8o4")
+}],
+"loop": 0,
+"name": &"interaction",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_1w8o4")
+}],
+"loop": 0,
+"name": &"no_interaction",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_iyypf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_1w8o4")
+}],
+"loop": 0,
+"name": &"interaction",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_1w8o4")
+}],
+"loop": 0,
+"name": &"no_interaction",
+"speed": 5.0
+}]
+
 [node name="NPC_interaction" type="Node2D" unique_id=1385599342]
 script = ExtResource("1_qfqsu")
+
+[node name="Detection" type="Area2D" parent="." unique_id=1972915413]
+visible = false
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detection" unique_id=613861623]
+shape = SubResource("CircleShape2D_iyypf")
+
+[node name="Interaction" type="Area2D" parent="." unique_id=370298031]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction" unique_id=1639831080]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_iyypf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=48384430]
+libraries/ = SubResource("AnimationLibrary_tafgp")
+
+[node name="Goblin" type="AnimatedSprite2D" parent="." unique_id=1078586205]
+visible = false
+modulate = Color(0, 0.44033605, 3.85046e-07, 1)
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_qfqsu")
+animation = &"interaction"
+
+[node name="Angel" type="AnimatedSprite2D" parent="." unique_id=1951730405]
+visible = false
+modulate = Color(1, 1, 0, 1)
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_e14d7")
+animation = &"interaction"
+
+[node name="Archer" type="AnimatedSprite2D" parent="." unique_id=234840258]
+visible = false
+modulate = Color(0.47905552, 0.2804853, 0.1451042, 1)
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_iyypf")
+animation = &"interaction"
 
 [node name="Bush" type="Sprite2D" parent="." unique_id=1833715438]
 position = Vector2(0, -16)
 texture = ExtResource("1_1w8o4")
 
-[node name="NPC" type="Sprite2D" parent="." unique_id=1140000766]
-position = Vector2(1.6940659e-21, -14.000002)
-scale = Vector2(0.625, 0.8749999)
-texture = ExtResource("1_1w8o4")
+[node name="DeathTimer" type="Timer" parent="." unique_id=434723705]
+wait_time = 2.0
+one_shot = true
 
-[node name="Area2D" type="Area2D" parent="." unique_id=1972915413]
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=613861623]
-shape = SubResource("CircleShape2D_iyypf")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=48384430]
-libraries/ = SubResource("AnimationLibrary_tafgp")
-
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="Detection" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="Interaction" to="." method="_on_interaction_body_entered"]
+[connection signal="animation_finished" from="Goblin" to="." method="_on_sprite_animation_finished"]
+[connection signal="animation_finished" from="Angel" to="." method="_on_sprite_animation_finished"]
+[connection signal="animation_finished" from="Archer" to="." method="_on_sprite_animation_finished"]
+[connection signal="timeout" from="DeathTimer" to="." method="_on_timer_timeout"]

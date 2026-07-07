@@ -27,5 +27,4 @@ func _ready() -> void:
 		add_child(instance)
 		# Removes the situation from the situation pool
 		situationPool.remove_at(situationID)
-		print(situationPool.size())
 		
