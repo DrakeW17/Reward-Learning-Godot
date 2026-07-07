@@ -12,15 +12,14 @@ var placedInteractions = []
 
 var interactionTypesAvailable = []
 
-func _ready() -> void:
+func SetInteractionTypes() -> void:
 	for i in range(2):
 			interactionAmounts[i] = int((float(interactionTypeDistribution[i]) / distributionSum) * interactionAmount)
 			for s in range(interactionAmounts[i]):
 				interactionTypesAvailable.append(i)
-		
-
-func SetInteractionTypes() -> void:
-
 	for i in range(placedInteractions.size()):
-		var typeIDPicked = randi() % interactionTypesAvailable.size()
-		placedInteractions[i].type
+		var typeID = randi_range(0, interactionTypesAvailable.size() - 1)
+		print(placedInteractions[i].NPC.type)
+		placedInteractions[i].NPC.type = interactionTypesAvailable[typeID]
+		placedInteractions[i].NPC.Set()
+		#interactionTypesAvailable.remove_at(typeID)

@@ -530,6 +530,7 @@ animation = &"idle"
 frame_progress = 0.9745929
 
 [node name="Angel" type="AnimatedSprite2D" parent="." unique_id=1951730405]
+visible = false
 position = Vector2(1, -9)
 sprite_frames = SubResource("SpriteFrames_e14d7")
 animation = &"idle"

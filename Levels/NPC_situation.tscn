@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dy34fbd1wm8p8"]
 
 [ext_resource type="PackedScene" uid="uid://ckdg5mati44vn" path="res://Levels/main_tile.tscn" id="1_eib6q"]
-[ext_resource type="Script" uid="uid://dt8yxpfhsa5lp" path="res://Entities/NPC/npc_interaction.gd" id="1_nyjau"]
+[ext_resource type="Script" uid="uid://bw2xpfvdqdguj" path="res://Levels/npc_situation.gd" id="1_nyjau"]
 [ext_resource type="PackedScene" uid="uid://bgnpg13b2qa8f" path="res://Entities/NPC/npc_interaction.tscn" id="2_4ixk2"]
 
 [node name="NPC_situation" type="Node2D" unique_id=1016195394]
@@ -11,3 +11,4 @@ script = ExtResource("1_nyjau")
 
 [node name="NPC_interaction" parent="." unique_id=1385599342 instance=ExtResource("2_4ixk2")]
 position = Vector2(295, 0)
+type = 1
