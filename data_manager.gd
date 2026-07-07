@@ -22,7 +22,5 @@ func _ready() -> void:
 func SetInteractionTypes() -> void:
 
 	for i in range(placedInteractions.size()):
-		print(placedInteractions[i].get_script())
-
 		var typeIDPicked = randi() % interactionTypesAvailable.size()
 		placedInteractions[i].type

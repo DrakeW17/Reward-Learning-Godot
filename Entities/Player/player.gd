@@ -20,7 +20,13 @@ var score = 0
 # Helpful paths
 @onready var scoreUI = $CanvasLayer/Score
 @onready var scoreIncreaseParticles = $CanvasLayer/ScoreIncreaseParticles
+@onready var animatedSprite = $AnimatedSprite2D
 
+
+func _ready() -> void:
+	# Plays idle animation upon game start
+	animatedSprite.play("idle")
+	
 func _physics_process(delta: float) -> void:
 	# Gets input from the player to determine movement direction
 	var movementDirection = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
@@ -44,6 +50,14 @@ func _physics_process(delta: float) -> void:
 		# Applies gravity if not on the floor
 		velocity.y += gravity * delta
 	
+	if movementDirection > 0:
+		animatedSprite.flip_h = false
+		animatedSprite.play("walk")
+	elif movementDirection < 0:
+		animatedSprite.flip_h = true
+		animatedSprite.play("walk")
+	else:
+		animatedSprite.play("idle")
 	# Updates the position
 	move_and_slide()
 
