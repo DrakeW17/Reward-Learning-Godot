@@ -24,6 +24,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	# emerges if it has not already done so
 	if not emergePlayed:
 		animations.play("emerge")
+		sprites[type].play("idle")
 		emergePlayed = true
 
 # When the player fails to interact
