@@ -10,11 +10,16 @@ var interactionAmounts = [0, 0, 0]
 
 var placedInteractions = []
 
+var interactionTypesAvailable = []
+
 func _ready() -> void:
 	for i in range(2):
 		interactionAmounts[i] = (interactionTypeDistribution[i] / distributionSum) * interactionAmount
+		for s in range(interactionAmounts[i].size()):
+			interactionTypesAvailable.append(i)
 		
 
 func SetInteractionTypes() -> void:
 	for i in range(placedInteractions):
-		
+		var typeIDPicked = randi() % interactionTypesAvailable.size()
+		placedInteractions[i].Type
