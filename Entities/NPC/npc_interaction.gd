@@ -15,12 +15,18 @@ var emergePlayed = false
 # Reference to the death timer
 @onready var deathTimer = $DeathTimer
 
+var Player
+
+var interacted = 0
+
 func Set() -> void:
 	# Sets the correct sprite depending on the type
+	sprites[type].scale.x = -1
 	sprites[type].visible = true
 
 # When a player has come near enough to initiate the interaction
 func _on_area_2d_body_entered(body: Node2D) -> void:
+	Player = body
 	# emerges if it has not already done so
 	if not emergePlayed:
 		animations.play("emerge")
@@ -30,19 +36,22 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 # When the player fails to interact
 func _on_timer_timeout() -> void:
 	sprites[type].play("no_interaction")
+	interacted = -1
 
 # When the interaction is finished
 func _on_sprite_animation_finished() -> void:
+	Player.scoreIncrease(int(pow(5, power) * (float(1.0/2.0) * abs(type - 1) * (type - 1 + interacted))))
 	# Deletes the NPC
 	queue_free()
 
 # When the player interacts
 func _on_interaction_body_entered(body: Node2D) -> void:
+	Player = body
 	# Stops the death timer
 	deathTimer.stop()
+	interacted = 1
 	# Plays the interaction animation
 	sprites[type].play("interaction")
 	# Deletes the interaction area to prevent re-interaction
 	$Interaction.queue_free()
 	# Increases the player's score
-	body.scoreIncrease(int(pow(5, power) * (type - 1)))

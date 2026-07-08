@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bl4562iiq0syf" path="res://Assets/Sprites/Goblin.png" id="3_e14d7"]
 [ext_resource type="Texture2D" uid="uid://bnuprj7hy36m4" path="res://Assets/Sprites/Angel.png" id="3_tafgp"]
 [ext_resource type="Texture2D" uid="uid://daioi7spvvodx" path="res://Assets/Sprites/Archer.png" id="4_t72fg"]
+[ext_resource type="Texture2D" uid="uid://2yhk2f4jg1nh" path="res://templateSquare.png" id="5_t72fg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_iyypf"]
 radius = 109.76794
@@ -221,7 +222,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bshb0")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"no_interaction",
 "speed": 5.0
 }]
@@ -334,7 +335,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_u4m7d")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"interaction",
 "speed": 15.0
 }, {
@@ -472,7 +473,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7auqa")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"interaction",
 "speed": 10.0
 }, {
@@ -495,7 +496,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_smhac")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"no_interaction",
 "speed": 10.0
 }]
@@ -526,27 +527,23 @@ libraries/ = SubResource("AnimationLibrary_tafgp")
 visible = false
 position = Vector2(0, -7)
 sprite_frames = SubResource("SpriteFrames_e7vlb")
-animation = &"idle"
-frame_progress = 0.9745929
+animation = &"interaction"
 
 [node name="Angel" type="AnimatedSprite2D" parent="." unique_id=1951730405]
 visible = false
 position = Vector2(1, -9)
 sprite_frames = SubResource("SpriteFrames_e14d7")
-animation = &"idle"
-frame = 2
-frame_progress = 0.49580267
+animation = &"interaction"
 
 [node name="Archer" type="AnimatedSprite2D" parent="." unique_id=234840258]
 visible = false
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_iyypf")
-animation = &"idle"
-frame = 2
-frame_progress = 0.4837791
+animation = &"no_interaction"
 
 [node name="Bush" type="Sprite2D" parent="." unique_id=1833715438]
 position = Vector2(0, -16)
+texture = ExtResource("5_t72fg")
 
 [node name="DeathTimer" type="Timer" parent="." unique_id=434723705]
 wait_time = 2.0

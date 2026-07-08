@@ -68,7 +68,7 @@ func _process(delta: float) -> void:
 # Function for increasing the score
 func scoreIncrease(amount: int) -> void:
 	# Spawns UI particles
-	scoreIncreaseParticles.amount = amount * 5
+	scoreIncreaseParticles.amount = abs(amount) * 5
 	scoreIncreaseParticles.emitting = true
 	# Updates the player's score
 	score += amount
