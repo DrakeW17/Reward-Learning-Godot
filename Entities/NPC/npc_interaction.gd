@@ -26,8 +26,9 @@ func Set() -> void:
 
 # When a player has come near enough to initiate the interaction
 func _on_area_2d_body_entered(body: Node2D) -> void:
+	# Saves the interacting body
 	Player = body
-	# emerges if it has not already done so
+	# Emerges if it has not already done so
 	if not emergePlayed:
 		animations.play("emerge")
 		sprites[type].play("idle")
@@ -40,12 +41,14 @@ func _on_timer_timeout() -> void:
 
 # When the interaction is finished
 func _on_sprite_animation_finished() -> void:
+	# Updates the player's score
 	Player.scoreIncrease(int(pow(5, power) * (float(1.0/2.0) * abs(type - 1) * (type - 1 + interacted))))
 	# Deletes the NPC
 	queue_free()
 
 # When the player interacts
 func _on_interaction_body_entered(body: Node2D) -> void:
+	# Saves the interacting body
 	Player = body
 	# Stops the death timer
 	deathTimer.stop()
