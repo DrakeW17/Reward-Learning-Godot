@@ -111,6 +111,14 @@ _data = {
 &"emerge": SubResource("Animation_e14d7")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_u1du3"]
+atlas = ExtResource("3_e14d7")
+region = Rect2(0, 480, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1cpj1"]
+atlas = ExtResource("3_e14d7")
+region = Rect2(48, 480, 48, 48)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_3jb8x"]
 atlas = ExtResource("3_e14d7")
 region = Rect2(0, 0, 48, 48)
@@ -171,6 +179,17 @@ region = Rect2(240, 333, 48, 47)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_u1du3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1cpj1")
+}],
+"loop": 1,
+"name": &"flash",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_3jb8x")
 }, {
 "duration": 1.0,
@@ -226,6 +245,22 @@ animations = [{
 "name": &"no_interaction",
 "speed": 5.0
 }]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_juqqn"]
+atlas = ExtResource("3_tafgp")
+region = Rect2(0, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vsc6a"]
+atlas = ExtResource("3_tafgp")
+region = Rect2(64, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r45kh"]
+atlas = ExtResource("3_tafgp")
+region = Rect2(128, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qet24"]
+atlas = ExtResource("3_tafgp")
+region = Rect2(192, 576, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_81n57"]
 atlas = ExtResource("3_tafgp")
@@ -295,6 +330,23 @@ region = Rect2(192, 768, 64, 64)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_juqqn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vsc6a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r45kh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qet24")
+}],
+"loop": 1,
+"name": &"flash",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_81n57")
 }, {
 "duration": 1.0,
@@ -335,7 +387,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_u4m7d")
 }],
-"loop": 0,
+"loop": 1,
 "name": &"interaction",
 "speed": 15.0
 }, {
@@ -356,6 +408,14 @@ animations = [{
 "name": &"no_interaction",
 "speed": 5.0
 }]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ag4p"]
+atlas = ExtResource("4_t72fg")
+region = Rect2(0, 480, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8tfb1"]
+atlas = ExtResource("4_t72fg")
+region = Rect2(48, 480, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fxo67"]
 atlas = ExtResource("4_t72fg")
@@ -431,6 +491,17 @@ region = Rect2(240, 0, 48, 48)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_iyypf"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ag4p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8tfb1")
+}],
+"loop": 1,
+"name": &"flash",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_fxo67")
@@ -527,19 +598,22 @@ libraries/ = SubResource("AnimationLibrary_tafgp")
 visible = false
 position = Vector2(0, -7)
 sprite_frames = SubResource("SpriteFrames_e7vlb")
-animation = &"interaction"
+animation = &"flash"
+frame_progress = 0.752978
 
 [node name="Angel" type="AnimatedSprite2D" parent="." unique_id=1951730405]
 visible = false
 position = Vector2(1, -9)
 sprite_frames = SubResource("SpriteFrames_e14d7")
-animation = &"interaction"
+animation = &"no_interaction"
 
 [node name="Archer" type="AnimatedSprite2D" parent="." unique_id=234840258]
 visible = false
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_iyypf")
-animation = &"no_interaction"
+animation = &"flash"
+frame = 1
+frame_progress = 0.6458661
 
 [node name="Bush" type="Sprite2D" parent="." unique_id=1833715438]
 position = Vector2(0, -16)

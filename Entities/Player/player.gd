@@ -15,7 +15,7 @@ var jumpStrength = 250
 var airControl = 0.8
 
 # Keeps track of the player's score
-var score = 0
+var score = 50
 
 # Helpful paths
 @onready var scoreUI = $CanvasLayer/Score
