@@ -15,8 +15,10 @@ var emergePlayed = false
 # Reference to the death timer
 @onready var deathTimer = $DeathTimer
 
+# Saves the interacting body
 var Player
 
+# Stores how the player interacted
 var interacted = 0
 
 func Set() -> void:
