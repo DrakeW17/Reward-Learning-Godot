@@ -184,7 +184,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_1cpj1")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"flash",
 "speed": 5.0
 }, {
@@ -387,7 +387,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_u4m7d")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"interaction",
 "speed": 15.0
 }, {
@@ -598,22 +598,19 @@ libraries/ = SubResource("AnimationLibrary_tafgp")
 visible = false
 position = Vector2(0, -7)
 sprite_frames = SubResource("SpriteFrames_e7vlb")
-animation = &"flash"
-frame_progress = 0.752978
+animation = &"idle"
 
 [node name="Angel" type="AnimatedSprite2D" parent="." unique_id=1951730405]
 visible = false
 position = Vector2(1, -9)
 sprite_frames = SubResource("SpriteFrames_e14d7")
-animation = &"no_interaction"
+animation = &"interaction"
 
 [node name="Archer" type="AnimatedSprite2D" parent="." unique_id=234840258]
 visible = false
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_iyypf")
-animation = &"flash"
-frame = 1
-frame_progress = 0.6458661
+animation = &"no_interaction"
 
 [node name="Bush" type="Sprite2D" parent="." unique_id=1833715438]
 position = Vector2(0, -16)
