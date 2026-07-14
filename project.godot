@@ -13,11 +13,17 @@ config_version=5
 config/name="Reward Learning Platformer"
 run/main_scene="uid://figq1ct867cy"
 config/features=PackedStringArray("4.7", "Forward Plus")
-config/icon="res://icon.svg"
 
 [autoload]
 
 DataManager="*uid://b1wh5hx4jyipy"
+
+[display]
+
+window/size/resizable=false
+window/size/borderless=true
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 
 [dotnet]
 

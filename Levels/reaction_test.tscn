@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://b3tatkbw76lxq"]
+
+[ext_resource type="Script" uid="uid://buo5a4302y6b6" path="res://Levels/reaction_test.gd" id="1_3msll"]
+[ext_resource type="Texture2D" uid="uid://2yhk2f4jg1nh" path="res://templateSquare.png" id="1_5lnfo"]
+[ext_resource type="FontFile" uid="uid://bht0gsdsgl50i" path="res://Assets/UI/Fonts/BasicPixel.ttf" id="3_yqrbj"]
+
+[node name="ReactionTest" type="Node2D" unique_id=1557494317]
+script = ExtResource("1_3msll")
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1897361326]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(588, 336)
+scale = Vector2(37.75, 22)
+texture = ExtResource("1_5lnfo")
+
+[node name="Flash" type="Sprite2D" parent="." unique_id=1759797517]
+visible = false
+position = Vector2(577.5, 332)
+scale = Vector2(37.09375, 21.75)
+texture = ExtResource("1_5lnfo")
+
+[node name="BetweenTimer" type="Timer" parent="." unique_id=1586433298]
+wait_time = 5.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1073753882]
+follow_viewport_enabled = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer" unique_id=297129219]
+offset_right = 1160.0
+offset_bottom = 653.0
+theme_override_fonts/normal_font = ExtResource("3_yqrbj")
+theme_override_font_sizes/normal_font_size = 64
+text = "Push space as soon as you see the screen turn white"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="timeout" from="BetweenTimer" to="." method="_on_between_timer_timeout"]
