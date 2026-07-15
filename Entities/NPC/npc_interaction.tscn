@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://2yhk2f4jg1nh" path="res://templateSquare.png" id="5_t72fg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_iyypf"]
-radius = 109.76794
+radius = 96.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iyypf"]
 size = Vector2(32, 32)
@@ -576,7 +576,6 @@ animations = [{
 script = ExtResource("1_qfqsu")
 
 [node name="Detection" type="Area2D" parent="." unique_id=1972915413]
-visible = false
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Detection" unique_id=613861623]

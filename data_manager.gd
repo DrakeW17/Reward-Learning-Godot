@@ -1,6 +1,10 @@
 extends Node
 
-var interactionAmount = 5
+# The reaction speed of the player (with some compensation for the player's movement speed)
+var reactionTime = 0
+
+# The amount of NPC interactions we want to generate
+var interactionAmount = 10
 
 # The distribution of interaction types. Order: bad, neutral, good.
 # Idealy, this should add up to interactionAmount

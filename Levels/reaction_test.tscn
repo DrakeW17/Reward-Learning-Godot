@@ -22,15 +22,15 @@ texture = ExtResource("1_5lnfo")
 [node name="BetweenTimer" type="Timer" parent="." unique_id=1586433298]
 wait_time = 5.0
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1073753882]
+[node name="Instructions" type="CanvasLayer" parent="." unique_id=1073753882]
 follow_viewport_enabled = true
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer" unique_id=297129219]
+[node name="RichTextLabel" type="RichTextLabel" parent="Instructions" unique_id=297129219]
 offset_right = 1160.0
 offset_bottom = 653.0
 theme_override_fonts/normal_font = ExtResource("3_yqrbj")
 theme_override_font_sizes/normal_font_size = 64
-text = "Push space as soon as you see the screen turn white"
+text = "Push space as soon as this message disappears"
 horizontal_alignment = 1
 vertical_alignment = 1
 

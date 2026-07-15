@@ -32,6 +32,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	Player = body
 	# Emerges if it has not already done so
 	if not emergePlayed:
+		deathTimer.wait_time = DataManager.reactionTime
 		animations.play("emerge")
 		sprites[type].play("idle")
 		emergePlayed = true
@@ -50,13 +51,14 @@ func _on_sprite_animation_finished() -> void:
 
 # When the player interacts
 func _on_interaction_body_entered(body: Node2D) -> void:
-	# Saves the interacting body
-	Player = body
-	# Stops the death timer
-	deathTimer.stop()
-	interacted = 1
-	# Plays the interaction animation
-	sprites[type].play("interaction")
-	# Deletes the interaction area to prevent re-interaction
-	$Interaction.queue_free()
-	# Increases the player's score
+	if !bool(interacted):
+		# Saves the interacting body
+		Player = body
+		# Stops the death timer
+		deathTimer.stop()
+		interacted = 1
+		# Plays the interaction animation
+		sprites[type].play("interaction")
+		# Deletes the interaction area to prevent re-interaction
+		$Interaction.queue_free()
+		# Increases the player's score
