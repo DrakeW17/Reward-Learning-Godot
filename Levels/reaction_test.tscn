@@ -13,12 +13,6 @@ position = Vector2(588, 336)
 scale = Vector2(37.75, 22)
 texture = ExtResource("1_5lnfo")
 
-[node name="Flash" type="Sprite2D" parent="." unique_id=1759797517]
-visible = false
-position = Vector2(577.5, 332)
-scale = Vector2(37.09375, 21.75)
-texture = ExtResource("1_5lnfo")
-
 [node name="BetweenTimer" type="Timer" parent="." unique_id=1586433298]
 wait_time = 5.0
 

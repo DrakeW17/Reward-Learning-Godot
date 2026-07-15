@@ -51,7 +51,7 @@ func _on_sprite_animation_finished() -> void:
 	queue_free()
 
 # Lets the player move again
-func letPlayerMove():
+func letPlayerMove() -> void:
 	Player.canMove = true
 
 # When the player interacts

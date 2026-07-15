@@ -8,7 +8,7 @@ var interactionAmount = 10
 
 # The distribution of interaction types. Order: bad, neutral, good.
 # Idealy, this should add up to interactionAmount
-const interactionTypeDistribution = [2, 2, 1]
+const interactionTypeDistribution = [2, 1, 2]
 # A sum of interactionTypeDistribution
 var distributionSum = interactionTypeDistribution.reduce(func(accum, number): return accum + number, 0)
 
