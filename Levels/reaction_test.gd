@@ -42,7 +42,7 @@ func _process(delta: float) -> void:
 				# Finds a time that the player would get 66% of the time
 				var time = (average - times.min()) * 0.33 + times.min()
 				# Updates this in the DataManager, with compensation for player movement time
-				DataManager.reactionTime = time + 1.0/6.0
+				DataManager.reactionTime = time + 2.0/3.0
 				# Loads the player into the game
 				get_tree().change_scene_to_file("res://main_scene.tscn")
 

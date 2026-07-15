@@ -633,9 +633,12 @@ texture = ExtResource("5_t72fg")
 wait_time = 2.0
 one_shot = true
 
+[node name="StartInteractionTimer" type="Timer" parent="." unique_id=440231444]
+
 [connection signal="body_entered" from="Detection" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="Interaction" to="." method="_on_interaction_body_entered"]
 [connection signal="animation_finished" from="Goblin" to="." method="_on_sprite_animation_finished"]
 [connection signal="animation_finished" from="Angel" to="." method="_on_sprite_animation_finished"]
 [connection signal="animation_finished" from="Archer" to="." method="_on_sprite_animation_finished"]
 [connection signal="timeout" from="DeathTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="StartInteractionTimer" to="." method="_on_start_interaction_timer_timeout"]

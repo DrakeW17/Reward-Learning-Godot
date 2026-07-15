@@ -14,6 +14,8 @@ var emergePlayed = false
 
 # Reference to the death timer
 @onready var deathTimer = $DeathTimer
+# Reference to the interaction start timer
+@onready var interactionTimer = $StartInteractionTimer
 
 # Saves the interacting body
 var Player
@@ -25,6 +27,7 @@ func Set() -> void:
 	# Sets the correct sprite depending on the type
 	sprites[type].scale.x = -1
 	sprites[type].visible = true
+	interactionTimer.wait_time = randf_range(0, 2)
 
 # When a player has come near enough to initiate the interaction
 func _on_area_2d_body_entered(body: Node2D) -> void:
@@ -32,12 +35,8 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	Player = body
 	# Prevents the player from moving
 	Player.canMove = false
-	# Emerges if it has not already done so
-	if not emergePlayed:
-		deathTimer.wait_time = DataManager.reactionTime
-		animations.play("emerge")
-		sprites[type].play("idle")
-		emergePlayed = true
+	# Starts the interaction timer
+	interactionTimer.start()
 
 # When the player fails to interact
 func _on_timer_timeout() -> void:
@@ -68,3 +67,12 @@ func _on_interaction_body_entered(body: Node2D) -> void:
 		# Deletes the interaction area to prevent re-interaction
 		$Interaction.queue_free()
 		# Increases the player's score
+
+
+func _on_start_interaction_timer_timeout() -> void:
+	# Emerges if it has not already done so
+	if not emergePlayed:
+		deathTimer.wait_time = DataManager.reactionTime
+		animations.play("emerge")
+		sprites[type].play("idle")
+		emergePlayed = true
