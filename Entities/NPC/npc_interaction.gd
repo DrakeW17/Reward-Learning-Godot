@@ -30,6 +30,8 @@ func Set() -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	# Saves the interacting body
 	Player = body
+	# Prevents the player from moving
+	Player.canMove = false
 	# Emerges if it has not already done so
 	if not emergePlayed:
 		deathTimer.wait_time = DataManager.reactionTime
@@ -48,6 +50,10 @@ func _on_sprite_animation_finished() -> void:
 	Player.scoreIncrease(int(pow(5, power) * (float(1.0/2.0) * abs(type - 1) * (type - 1 + interacted))))
 	# Deletes the NPC
 	queue_free()
+
+# Lets the player move again
+func letPlayerMove():
+	Player.canMove = true
 
 # When the player interacts
 func _on_interaction_body_entered(body: Node2D) -> void:
