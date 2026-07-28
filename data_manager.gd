@@ -1,7 +1,7 @@
 extends Node
 
 # The reaction speed of the player (with some compensation for the player's movement speed)
-var reactionTime = 1
+var reactionTime = 2
 #I changed reactionTime to a set amount for testing so I don't have to do the test every time
 
 # The amount of NPC interactions we want to generate
@@ -13,6 +13,9 @@ const interactionTypeDistribution = [2, 1, 2]
 # A sum of interactionTypeDistribution
 var distributionSum = interactionTypeDistribution.reduce(func(accum, number): return accum + number, 0)
 
+# The ordered list of NPCs to spawn, as size_type labels
+var npcLabels = ['sm_goblin', 'sm_goblin', 'md_goblin', 'sm_goblin', 'lg_goblin', 'sm_goblin', 'sm_angel', 'sm_goblin', 'md_angel', 'sm_goblin', 'lg_angel', 'sm_goblin', 'sm_archer', 'sm_goblin', 'md_archer', 'sm_goblin', 'lg_archer', 'md_goblin', 'md_goblin', 'lg_goblin']
+
 # A list of references to the NPC Situations
 var placedInteractions = []
 
@@ -22,13 +25,5 @@ var interactionTypesAvailable = []
 # Sets the interaction types
 func SetInteractionTypes() -> void:
 	# Sets interactionTypesAvailable
-	for i in range(3):
-			for s in range(ceil((float(interactionTypeDistribution[i]) / distributionSum) * interactionAmount)):
-				interactionTypesAvailable.append(i)
-	
-	# Distributes the available interaction types over the placed interactions
 	for i in range(placedInteractions.size()):
-		var typeID = randi_range(0, interactionTypesAvailable.size() - 1)
-		placedInteractions[i].NPC.type = interactionTypesAvailable[typeID]
-		placedInteractions[i].NPC.Set()
-		interactionTypesAvailable.remove_at(typeID)
+		placedInteractions[i].NPC.Set(npcLabels[i])

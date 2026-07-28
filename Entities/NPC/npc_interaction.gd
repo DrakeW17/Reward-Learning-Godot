@@ -26,9 +26,20 @@ var Player
 # Stores how the player interacted
 var interacted = 0
 
-func Set() -> void:
-	# Sets the correct sprite depending on the type
-	sprites[type].scale.x = -1
+const typeIndices = {"goblin": 0, "archer": 1, "angel": 2}
+const sizeScales = {"sm": 0.75, "md": 1.0, "lg": 1.4}
+const sizePowers = {"sm": 0, "md": 1, "lg": 2}
+
+func Set(label: String) -> void:
+	var parts = label.split("_")
+	var sizeKey = parts[0]
+	var typeKey = parts[1]
+
+	type = typeIndices[typeKey]
+	power = sizePowers[sizeKey]
+
+	var scaleAmount = sizeScales[sizeKey]
+	sprites[type].scale = Vector2(-scaleAmount, scaleAmount)
 	sprites[type].visible = true
 	interactionTimer.wait_time = randf_range(0, 2)
 
@@ -42,8 +53,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	interactionTimer.start()
 
 # When the player fails to interact
-func _on_timer_timeout() -> void:
-	print("no interaction")
+func _on_death_timer_timeout() -> void:
 	sprites[type].play("no_interaction")
 	interacted = -1
 
@@ -61,7 +71,6 @@ func letPlayerMove() -> void:
 # When the player interacts
 func _on_interaction_body_entered(body: Node2D) -> void:
 	if !bool(interacted):
-		print("interaction detected")
 		# Saves the interacting body
 		Player = body
 		# Stops the death timer
@@ -92,9 +101,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 
 # Starts the flash/interaction window after the anticipatory delay
 func _on_anticipatory_delay_timer_timeout() -> void:
-	print("ad timed out")
 	deathTimer.wait_time = DataManager.reactionTime
 	deathTimer.start()
-	print("death timer started")
 	letPlayerMove()
 	sprites[type].play("flash")
