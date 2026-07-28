@@ -16,6 +16,9 @@ var emergePlayed = false
 @onready var deathTimer = $DeathTimer
 # Reference to the interaction start timer
 @onready var interactionTimer = $StartInteractionTimer
+# Reference to the 
+@onready var anticipatoryDelayTimer = $AnticipatoryDelayTimer
+
 
 # Saves the interacting body
 var Player
@@ -40,6 +43,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 
 # When the player fails to interact
 func _on_timer_timeout() -> void:
+	print("no interaction")
 	sprites[type].play("no_interaction")
 	interacted = -1
 
@@ -57,6 +61,7 @@ func letPlayerMove() -> void:
 # When the player interacts
 func _on_interaction_body_entered(body: Node2D) -> void:
 	if !bool(interacted):
+		print("interaction detected")
 		# Saves the interacting body
 		Player = body
 		# Stops the death timer
@@ -72,7 +77,24 @@ func _on_interaction_body_entered(body: Node2D) -> void:
 func _on_start_interaction_timer_timeout() -> void:
 	# Emerges if it has not already done so
 	if not emergePlayed:
-		deathTimer.wait_time = DataManager.reactionTime
+		#deathTimer.wait_time = DataManager.reactionTime
 		animations.play("emerge")
 		sprites[type].play("idle")
 		emergePlayed = true
+		
+		
+# When the emerge animation finishes, wait a random amount between 2 and 2.5s before flashing
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "emerge":
+		anticipatoryDelayTimer.wait_time = randf_range(2.0, 2.5)
+		anticipatoryDelayTimer.start()
+		
+
+# Starts the flash/interaction window after the anticipatory delay
+func _on_anticipatory_delay_timer_timeout() -> void:
+	print("ad timed out")
+	deathTimer.wait_time = DataManager.reactionTime
+	deathTimer.start()
+	print("death timer started")
+	letPlayerMove()
+	sprites[type].play("flash")

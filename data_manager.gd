@@ -1,7 +1,8 @@
 extends Node
 
 # The reaction speed of the player (with some compensation for the player's movement speed)
-var reactionTime = 0
+var reactionTime = 1
+#I changed reactionTime to a set amount for testing so I don't have to do the test every time
 
 # The amount of NPC interactions we want to generate
 var interactionAmount = 10
