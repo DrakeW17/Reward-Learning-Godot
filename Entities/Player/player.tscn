@@ -224,7 +224,8 @@ position = Vector2(0, 2.3841858e-07)
 scale = Vector2(0.5, 0.5)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=91860967]
-position = Vector2(10, -16)
+position = Vector2(9, -15)
+scale = Vector2(0.9583333, 0.9583333)
 sprite_frames = SubResource("SpriteFrames_f13o1")
 animation = &"walk"
 

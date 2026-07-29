@@ -15,7 +15,9 @@ var distributionSum = interactionTypeDistribution.reduce(func(accum, number): re
 
 # The ordered list of NPCs to spawn, as size_type labels
 #var npcLabels = ['sm_goblin', 'sm_goblin', 'md_goblin', 'sm_goblin', 'lg_goblin', 'sm_goblin', 'sm_angel', 'sm_goblin', 'md_angel', 'sm_goblin', 'lg_angel', 'sm_goblin', 'sm_archer', 'sm_goblin', 'md_archer', 'sm_goblin', 'lg_archer', 'md_goblin', 'md_goblin', 'lg_goblin']
-var npcLabels = ['sm_goblin', 'md_goblin', 'lg_goblin', 'sm_angel', 'md_angel', 'lg_angel', 'sm_archer', 'md_archer', 'lg_archer', 'md_goblin', 'md_angel', 'md_archer', 'sm_goblin', 'sm_goblin']
+var npcLabels = [ 'sm_angel', 'md_angel', 'lg_angel', 'sm_archer', 'md_archer', 'lg_archer', 'md_goblin', 'md_angel', 'md_archer', 'sm_goblin', 'sm_goblin']
+#'sm_goblin', 'md_goblin', 'lg_goblin',
+
 # A list of references to the NPC Situations
 var placedInteractions = []
 

@@ -57,11 +57,12 @@ func Set(label: String) -> void:
 	
 	
 	#Angel is larger so scale down if angel
-	if (typeKey == 'angel' && (sizeKey == 'lg' || sizeKey == 'md')):
-		scaleAmount = scaleAmount * 0.9
-
-	# Apply scale
-	sprite.scale = Vector2(-scaleAmount, scaleAmount)
+	if (typeKey == 'angel'):
+		# Apply scale
+		sprite.scale = Vector2(-(scaleAmount*0.8), (scaleAmount*0.8))
+	else:
+		# Apply scale
+		sprite.scale = Vector2(-scaleAmount, scaleAmount)
 	# Compensate for scaling around center pivot
 	if (sizeKey == 'sm'):
 		var frameTexture = sprite.sprite_frames.get_frame_texture(sprite.animation, 0)
