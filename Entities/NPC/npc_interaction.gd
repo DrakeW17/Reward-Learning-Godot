@@ -2,6 +2,10 @@ extends Node2D
 
 # Reference to the animation player
 @onready var animations = $AnimationPlayer
+
+# Stores each sprite's original position, before any scale-compensation is applied
+var spriteBasePositions = []
+
 # Has the emerge animation played
 var emergePlayed = false
 
@@ -30,6 +34,11 @@ const typeIndices = {"goblin": 0, "archer": 1, "angel": 2}
 const sizeScales = {"sm": 0.75, "md": 1.0, "lg": 1.4}
 const sizePowers = {"sm": 0, "md": 1, "lg": 2}
 
+func _ready() -> void:
+	# Records the original position of each sprite before any adjustments
+	for sprite in sprites:
+		spriteBasePositions.append(sprite.position)
+
 func Set(label: String) -> void:
 	var parts = label.split("_")
 	var sizeKey = parts[0]
@@ -39,10 +48,40 @@ func Set(label: String) -> void:
 	power = sizePowers[sizeKey]
 
 	var scaleAmount = sizeScales[sizeKey]
-	sprites[type].scale = Vector2(-scaleAmount, scaleAmount)
-	sprites[type].visible = true
-	interactionTimer.wait_time = randf_range(0, 2)
+	var sprite = sprites[type]
+	
+	
+	# Reset before applying scaling
+	sprite.scale = Vector2(-1, 1)
+	sprite.position = spriteBasePositions[type]
+	
+	
+	#Angel is larger so scale down if angel
+	if (typeKey == 'angel' && (sizeKey == 'lg' || sizeKey == 'md')):
+		scaleAmount = scaleAmount * 0.9
 
+	# Apply scale
+	sprite.scale = Vector2(-scaleAmount, scaleAmount)
+	# Compensate for scaling around center pivot
+	if (sizeKey == 'sm'):
+		var frameTexture = sprite.sprite_frames.get_frame_texture(sprite.animation, 0)
+		var spriteHeight = frameTexture.get_height()
+		var offset = (spriteHeight * (1.0 - scaleAmount)) / 2.0
+		sprite.position.y += offset
+	
+	if (sizeKey == 'md'):
+		var frameTexture = sprite.sprite_frames.get_frame_texture(sprite.animation, 0)
+		var spriteHeight = frameTexture.get_height()
+		var offset = ((spriteHeight * (1.0 - scaleAmount)) / 2.0) + 3.5
+		sprite.position.y += offset
+		
+	
+		
+		
+
+	sprite.visible = true
+	interactionTimer.wait_time = randf_range(0, 2)
+	
 # When a player has come near enough to initiate the interaction
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	# Saves the interacting body
