@@ -14,9 +14,9 @@ const interactionTypeDistribution = [2, 1, 2]
 var distributionSum = interactionTypeDistribution.reduce(func(accum, number): return accum + number, 0)
 
 # The ordered list of NPCs to spawn, as size_type labels
-#var npcLabels = ['sm_goblin', 'sm_goblin', 'md_goblin', 'sm_goblin', 'lg_goblin', 'sm_goblin', 'sm_angel', 'sm_goblin', 'md_angel', 'sm_goblin', 'lg_angel', 'sm_goblin', 'sm_archer', 'sm_goblin', 'md_archer', 'sm_goblin', 'lg_archer', 'md_goblin', 'md_goblin', 'lg_goblin']
-var npcLabels = [ 'sm_angel', 'md_angel', 'lg_angel', 'sm_archer', 'md_archer', 'lg_archer', 'md_goblin', 'md_angel', 'md_archer', 'sm_goblin', 'sm_goblin']
-#'sm_goblin', 'md_goblin', 'lg_goblin',
+#var npcLabels = ['sm_goblin', 'sm_goblin', 'md_goblin', 'sm_goblin', 'lg_goblin', 'sm_goblin', 'sm_angel', 'sm_goblin', 'md_angel', 'sm_goblin', 'lg_angel', 'sm_goblin', 'sm_archer', 'sm_goblin', 'md_archer', 'sm_goblin', 'lg_archer', 'md_goblin', 'md_goblin', 'lg_goblin', 'md_goblin', 'sm_angel', 'md_goblin', 'md_angel', 'md_goblin', 'lg_angel', 'md_goblin', 'sm_archer', 'md_goblin', 'md_archer', 'md_goblin', 'lg_archer', 'lg_goblin', 'lg_goblin', 'sm_angel', 'lg_goblin', 'md_angel', 'lg_goblin', 'lg_angel', 'lg_goblin', 'sm_archer', 'lg_goblin', 'md_archer', 'lg_goblin', 'lg_archer', 'sm_angel', 'sm_angel', 'md_angel', 'sm_angel', 'lg_angel', 'sm_angel', 'sm_archer', 'sm_angel', 'md_archer', 'sm_angel', 'lg_archer', 'md_angel', 'md_angel', 'lg_angel', 'md_angel', 'sm_archer', 'md_angel', 'md_archer', 'md_angel', 'lg_archer', 'lg_angel', 'lg_angel', 'sm_archer', 'lg_angel', 'md_archer', 'lg_angel', 'lg_archer', 'sm_archer', 'sm_archer', 'md_archer', 'sm_archer', 'lg_archer', 'md_archer', 'md_archer', 'lg_archer', 'lg_archer']
+var npcLabels = [ 'sm_goblin', 'md_goblin', 'lg_goblin','sm_angel', 'md_angel', 'lg_angel', 'sm_archer', 'md_archer', 'lg_archer', 'md_goblin', 'md_angel', 'md_archer', 'sm_goblin', 'sm_goblin']
+
 
 # A list of references to the NPC Situations
 var placedInteractions = []

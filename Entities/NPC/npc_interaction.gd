@@ -3,6 +3,7 @@ extends Node2D
 # Reference to the animation player
 @onready var animations = $AnimationPlayer
 
+
 # Stores each sprite's original position, before any scale-compensation is applied
 var spriteBasePositions = []
 
@@ -11,6 +12,9 @@ var emergePlayed = false
 
 # References to the sprites possible for the npc
 @onready var sprites = [$Goblin, $Archer, $Angel]
+
+enum Sprites {goblin, archer, angel}
+
 # The type of the npc
 @export var type = 0
 # The power of the npc
@@ -95,6 +99,9 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 # When the player fails to interact
 func _on_death_timer_timeout() -> void:
 	sprites[type].play("no_interaction")
+	if (type == 0):
+		await get_tree().create_timer(0.3).timeout
+		Player.flash_red()
 	interacted = -1
 
 # When the interaction is finished
@@ -107,6 +114,7 @@ func _on_sprite_animation_finished() -> void:
 # Lets the player move again
 func letPlayerMove() -> void:
 	Player.canMove = true
+	Player.inputPrimed = false
 
 # When the player interacts
 func _on_interaction_body_entered(body: Node2D) -> void:
@@ -116,6 +124,15 @@ func _on_interaction_body_entered(body: Node2D) -> void:
 		# Stops the death timer
 		deathTimer.stop()
 		interacted = 1
+		if (type == Sprites.goblin):
+			Player.play_attack()
+			
+		if (type == Sprites.angel):
+			#Angel flys up before the animation
+			var flyUpOffset = Vector2(0, -40) # how far up it flies, tweak to taste
+			var flyTween = create_tween()
+			flyTween.tween_property(sprites[type], "position", spriteBasePositions[type] + flyUpOffset, 0.5)
+			await flyTween.finished
 		# Plays the interaction animation
 		sprites[type].play("interaction")
 		# Deletes the interaction area to prevent re-interaction
@@ -145,3 +162,4 @@ func _on_anticipatory_delay_timer_timeout() -> void:
 	deathTimer.start()
 	letPlayerMove()
 	sprites[type].play("flash")
+	
