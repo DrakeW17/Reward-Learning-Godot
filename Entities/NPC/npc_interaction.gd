@@ -3,6 +3,13 @@ extends Node2D
 # Reference to the animation player
 @onready var animations = $AnimationPlayer
 
+#Variables for logging
+const typeNames = ["goblin", "archer", "angel"]
+var flashStartTime := 0.0
+var reactionTime
+var potentialReward = 0
+
+
 
 # Stores each sprite's original position, before any scale-compensation is applied
 var spriteBasePositions = []
@@ -14,6 +21,11 @@ var emergePlayed = false
 @onready var sprites = [$Goblin, $Archer, $Angel]
 
 enum Sprites {goblin, archer, angel}
+
+enum Outcome {LOSS, NEUTRAL, GAIN}
+
+const outcomeNames = ["loss", "neutral", "gain"]
+
 
 # The type of the npc
 @export var type = 0
@@ -60,6 +72,8 @@ func Set(label: String) -> void:
 	sprite.position = spriteBasePositions[type]
 	
 	
+	# Potential reward: what's at stake if the player succeeds, calculated once and fixed
+	potentialReward = int(pow(5, power) * (type - 1))	
 	#Angel is larger so scale down if angel
 	if (typeKey == 'angel'):
 		# Apply scale
@@ -102,7 +116,10 @@ func _on_death_timer_timeout() -> void:
 	if (type == 0):
 		await get_tree().create_timer(0.3).timeout
 		Player.flash_red()
+	reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
+	GamePlayLog.record_interaction(outcomeNames[type], false, 0, potentialReward)
 	interacted = -1
+	
 
 # When the interaction is finished
 func _on_sprite_animation_finished() -> void:
@@ -135,6 +152,9 @@ func _on_interaction_body_entered(body: Node2D) -> void:
 			await flyTween.finished
 		# Plays the interaction animation
 		sprites[type].play("interaction")
+		reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
+		GamePlayLog.record_interaction(outcomeNames[type], true, reactionTime, potentialReward)
+
 		# Deletes the interaction area to prevent re-interaction
 		$Interaction.queue_free()
 		# Increases the player's score
@@ -160,6 +180,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 func _on_anticipatory_delay_timer_timeout() -> void:
 	deathTimer.wait_time = DataManager.reactionTime
 	deathTimer.start()
-	letPlayerMove()
 	sprites[type].play("flash")
+	letPlayerMove()
+	flashStartTime = Time.get_ticks_msec() / 1000.0
 	

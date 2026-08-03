@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.7", "Forward Plus")
 [autoload]
 
 DataManager="*uid://b1wh5hx4jyipy"
+GamePlayLog="*uid://cow77sxktw72a"
 
 [display]
 
