@@ -118,6 +118,7 @@ func _on_death_timer_timeout() -> void:
 		Player.flash_red()
 	reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
 	GamePlayLog.record_interaction(outcomeNames[type], false, 0, potentialReward)
+	PauseManager.notify_emerge_finished()
 	interacted = -1
 	
 
@@ -163,7 +164,7 @@ func _on_interaction_body_entered(body: Node2D) -> void:
 func _on_start_interaction_timer_timeout() -> void:
 	# Emerges if it has not already done so
 	if not emergePlayed:
-		#deathTimer.wait_time = DataManager.reactionTime
+		PauseManager.notify_emerge_started()
 		animations.play("emerge")
 		sprites[type].play("idle")
 		emergePlayed = true
@@ -183,4 +184,5 @@ func _on_anticipatory_delay_timer_timeout() -> void:
 	sprites[type].play("flash")
 	letPlayerMove()
 	flashStartTime = Time.get_ticks_msec() / 1000.0
+	PauseManager.notify_emerge_finished()
 	
