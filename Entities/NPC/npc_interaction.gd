@@ -8,6 +8,8 @@ const typeNames = ["goblin", "archer", "angel"]
 var flashStartTime := 0.0
 var reactionTime
 var potentialReward = 0
+var isFlashing = false
+
 
 
 
@@ -112,6 +114,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 
 # When the player fails to interact
 func _on_death_timer_timeout() -> void:
+	isFlashing = false
 	sprites[type].play("no_interaction")
 	if (type == 0):
 		await get_tree().create_timer(0.3).timeout
@@ -135,30 +138,30 @@ func letPlayerMove() -> void:
 	Player.inputPrimed = false
 
 # When the player interacts
-func _on_interaction_body_entered(body: Node2D) -> void:
-	if !bool(interacted):
-		# Saves the interacting body
-		Player = body
-		# Stops the death timer
-		deathTimer.stop()
-		interacted = 1
-		if (type == Sprites.goblin):
-			Player.play_attack()
-			
-		if (type == Sprites.angel):
-			#Angel flys up before the animation
-			var flyUpOffset = Vector2(0, -40) # how far up it flies, tweak to taste
-			var flyTween = create_tween()
-			flyTween.tween_property(sprites[type], "position", spriteBasePositions[type] + flyUpOffset, 0.5)
-			await flyTween.finished
-		# Plays the interaction animation
-		sprites[type].play("interaction")
-		reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
-		GamePlayLog.record_interaction(outcomeNames[type], true, reactionTime, potentialReward)
+func _unhandled_input(event: InputEvent) -> void:
+	if isFlashing and interacted == 0 and event.is_action_pressed("move_right"):
+		_on_success()
 
-		# Deletes the interaction area to prevent re-interaction
+func _on_success() -> void:
+	isFlashing = false
+	deathTimer.stop()
+	interacted = 1
+
+	if (type == Sprites.goblin):
+		Player.play_attack()
+
+	if (type == Sprites.angel):
+		var flyUpOffset = Vector2(0, -40)
+		var flyTween = create_tween()
+		flyTween.tween_property(sprites[type], "position", spriteBasePositions[type] + flyUpOffset, 0.5)
+		await flyTween.finished
+
+	sprites[type].play("interaction")
+	reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
+	GamePlayLog.record_interaction(outcomeNames[type], true, reactionTime, potentialReward)
+
+	if is_instance_valid($Interaction):
 		$Interaction.queue_free()
-		# Increases the player's score
 
 
 func _on_start_interaction_timer_timeout() -> void:
@@ -185,4 +188,5 @@ func _on_anticipatory_delay_timer_timeout() -> void:
 	letPlayerMove()
 	flashStartTime = Time.get_ticks_msec() / 1000.0
 	PauseManager.notify_emerge_finished()
+	isFlashing = true
 	

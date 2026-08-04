@@ -549,8 +549,6 @@ size = Vector2(44, 42)
 
 [node name="NPC_interaction" type="Node2D" unique_id=1385599342]
 script = ExtResource("1_qfqsu")
-type = null
-power = null
 
 [node name="Detection" type="Area2D" parent="." unique_id=1972915413]
 collision_mask = 2

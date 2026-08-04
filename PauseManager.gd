@@ -8,7 +8,7 @@ var emerging_count := 0
 
 func _ready() -> void:
 	play_timer = Timer.new()
-	play_timer.wait_time = 10 #480.0 # 8 minutes
+	play_timer.wait_time = 30 #480.0 # 8 minutes
 	play_timer.one_shot = true # still one_shot -- we manually restart it each cycle
 	add_child(play_timer)
 	play_timer.timeout.connect(_on_play_timer_timeout)
