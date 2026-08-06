@@ -551,6 +551,7 @@ size = Vector2(44, 42)
 script = ExtResource("1_qfqsu")
 
 [node name="Detection" type="Area2D" parent="." unique_id=1972915413]
+visible = false
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Detection" unique_id=613861623]

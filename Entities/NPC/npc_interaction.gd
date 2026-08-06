@@ -10,9 +10,6 @@ var reactionTime
 var potentialReward = 0
 var isFlashing = false
 
-
-
-
 # Stores each sprite's original position, before any scale-compensation is applied
 var spriteBasePositions = []
 
@@ -28,7 +25,6 @@ enum Outcome {LOSS, NEUTRAL, GAIN}
 
 const outcomeNames = ["loss", "neutral", "gain"]
 
-
 # The type of the npc
 @export var type = 0
 # The power of the npc
@@ -40,7 +36,6 @@ const outcomeNames = ["loss", "neutral", "gain"]
 @onready var interactionTimer = $StartInteractionTimer
 # Reference to the 
 @onready var anticipatoryDelayTimer = $AnticipatoryDelayTimer
-
 
 # Saves the interacting body
 var Player
@@ -75,7 +70,8 @@ func Set(label: String) -> void:
 	
 	
 	# Potential reward: what's at stake if the player succeeds, calculated once and fixed
-	potentialReward = int(pow(5, power) * (type - 1))	
+	potentialReward = int(pow(5, power) * (type - 1))
+	
 	#Angel is larger so scale down if angel
 	if (typeKey == 'angel'):
 		# Apply scale
@@ -83,26 +79,22 @@ func Set(label: String) -> void:
 	else:
 		# Apply scale
 		sprite.scale = Vector2(-scaleAmount, scaleAmount)
+		
 	# Compensate for scaling around center pivot
 	if (sizeKey == 'sm'):
 		var frameTexture = sprite.sprite_frames.get_frame_texture(sprite.animation, 0)
 		var spriteHeight = frameTexture.get_height()
 		var offset = (spriteHeight * (1.0 - scaleAmount)) / 2.0
 		sprite.position.y += offset
-	
-	if (sizeKey == 'md'):
+	elif (sizeKey == 'md'):
 		var frameTexture = sprite.sprite_frames.get_frame_texture(sprite.animation, 0)
 		var spriteHeight = frameTexture.get_height()
 		var offset = ((spriteHeight * (1.0 - scaleAmount)) / 2.0) + 3.5
 		sprite.position.y += offset
 		
-	
-		
-		
-
 	sprite.visible = true
-	interactionTimer.wait_time = randf_range(0, 2)
-	
+
+
 # When a player has come near enough to initiate the interaction
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	# Saves the interacting body
@@ -110,7 +102,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	# Prevents the player from moving
 	Player.canMove = false
 	# Starts the interaction timer
-	interactionTimer.start()
+	interactionTimer.start(randf_range(0, 2))
 
 # When the player fails to interact
 func _on_death_timer_timeout() -> void:
@@ -123,7 +115,7 @@ func _on_death_timer_timeout() -> void:
 	GamePlayLog.record_interaction(outcomeNames[type], false, 0, potentialReward)
 	PauseManager.notify_emerge_finished()
 	interacted = -1
-	
+	letPlayerMove()
 
 # When the interaction is finished
 func _on_sprite_animation_finished() -> void:
@@ -146,6 +138,7 @@ func _on_success() -> void:
 	isFlashing = false
 	deathTimer.stop()
 	interacted = 1
+	letPlayerMove()
 
 	if (type == Sprites.goblin):
 		Player.play_attack()
@@ -163,7 +156,6 @@ func _on_success() -> void:
 	if is_instance_valid($Interaction):
 		$Interaction.queue_free()
 
-
 func _on_start_interaction_timer_timeout() -> void:
 	# Emerges if it has not already done so
 	if not emergePlayed:
@@ -171,21 +163,16 @@ func _on_start_interaction_timer_timeout() -> void:
 		animations.play("emerge")
 		sprites[type].play("idle")
 		emergePlayed = true
-		
-		
+
 # When the emerge animation finishes, wait a random amount between 2 and 2.5s before flashing
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "emerge":
-		anticipatoryDelayTimer.wait_time = randf_range(2.0, 2.5)
-		anticipatoryDelayTimer.start()
-		
+		anticipatoryDelayTimer.start(randf_range(2.0, 2.5))
 
 # Starts the flash/interaction window after the anticipatory delay
 func _on_anticipatory_delay_timer_timeout() -> void:
-	deathTimer.wait_time = DataManager.reactionTime
-	deathTimer.start()
+	deathTimer.start(DataManager.reactionTime)
 	sprites[type].play("flash")
-	letPlayerMove()
 	flashStartTime = Time.get_ticks_msec() / 1000.0
 	PauseManager.notify_emerge_finished()
 	isFlashing = true

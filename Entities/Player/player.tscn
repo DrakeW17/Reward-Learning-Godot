@@ -7,27 +7,27 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tekja"]
 atlas = ExtResource("2_tekja")
-region = Rect2(0, 288, 48, 48)
+region = Rect2(0, 336, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ap3xn"]
 atlas = ExtResource("2_tekja")
-region = Rect2(48, 288, 48, 48)
+region = Rect2(48, 336, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iplt1"]
 atlas = ExtResource("2_tekja")
-region = Rect2(96, 288, 48, 48)
+region = Rect2(96, 336, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_owvpp"]
 atlas = ExtResource("2_tekja")
-region = Rect2(144, 288, 48, 48)
+region = Rect2(144, 336, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xr8lj"]
 atlas = ExtResource("2_tekja")
-region = Rect2(192, 288, 48, 48)
+region = Rect2(192, 336, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r8fok"]
 atlas = ExtResource("2_tekja")
-region = Rect2(240, 288, 48, 48)
+region = Rect2(240, 336, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nhbkt"]
 atlas = ExtResource("2_tekja")
