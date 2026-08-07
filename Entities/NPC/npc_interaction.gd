@@ -1,5 +1,7 @@
 extends Node2D
 
+signal player_interacted
+
 # Reference to the animation player
 @onready var animations = $AnimationPlayer
 
@@ -26,9 +28,9 @@ enum Outcome {LOSS, NEUTRAL, GAIN}
 const outcomeNames = ["loss", "neutral", "gain"]
 
 # The type of the npc
-@export var type = 0
+var type = 0
 # The power of the npc
-@export var power = 0
+var power = 0
 
 # Reference to the death timer
 @onready var deathTimer = $DeathTimer
@@ -36,6 +38,9 @@ const outcomeNames = ["loss", "neutral", "gain"]
 @onready var interactionTimer = $StartInteractionTimer
 # Reference to the 
 @onready var anticipatoryDelayTimer = $AnticipatoryDelayTimer
+
+# Overriding the death timer. -1 = no override, -2 = infinite time
+@export var deathTimerOverride = -1
 
 # Saves the interacting body
 var Player
@@ -133,6 +138,7 @@ func letPlayerMove() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if isFlashing and interacted == 0 and event.is_action_pressed("move_right"):
 		_on_success()
+		emit_signal("player_interacted")
 
 func _on_success() -> void:
 	isFlashing = false
@@ -171,9 +177,12 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 
 # Starts the flash/interaction window after the anticipatory delay
 func _on_anticipatory_delay_timer_timeout() -> void:
-	deathTimer.start(DataManager.reactionTime)
+	if deathTimerOverride == -1:
+		deathTimer.start(DataManager.reactionTime)
+	elif deathTimerOverride >= 0:
+		print(deathTimerOverride)
+		deathTimer.start(0.1)
 	sprites[type].play("flash")
 	flashStartTime = Time.get_ticks_msec() / 1000.0
 	PauseManager.notify_emerge_finished()
 	isFlashing = true
-	

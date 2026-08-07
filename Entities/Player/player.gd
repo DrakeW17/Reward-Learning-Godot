@@ -84,7 +84,7 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 
 func _process(delta: float) -> void:
 	# Updates the score UI
-	scoreUI.text = "Score: " + str(score)
+	scoreUI.text = "Coins: " + str(score)
 
 # Function for increasing the score
 func scoreIncrease(amount: int) -> void:
