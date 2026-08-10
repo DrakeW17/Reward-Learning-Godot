@@ -9,7 +9,6 @@ var inputPrimed = false
 #Stores if the player is actively attacking
 var isAttacking = false
 
-
 #tween variable for red flashing
 var flash_tween: Tween
 
