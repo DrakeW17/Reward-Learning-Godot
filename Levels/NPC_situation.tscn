@@ -12,4 +12,3 @@ tile_map_data = PackedByteArray("AAAAAAAAAQABAAAAAAABAAAAAQABAAAAAAACAAAAAQABAAA
 
 [node name="NPC_interaction" parent="." unique_id=1385599342 instance=ExtResource("2_4ixk2")]
 position = Vector2(295, 0)
-type = 1

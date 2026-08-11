@@ -1,3 +1,5 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+Reward Learning Platformer.dmg
+.DS_Store

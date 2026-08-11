@@ -117,7 +117,9 @@ func _on_death_timer_timeout() -> void:
 		await get_tree().create_timer(0.3).timeout
 		Player.flash_red()
 	reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
-	GamePlayLog.record_interaction(outcomeNames[type], false, 0, potentialReward)
+	if not DataManager.calibrating:
+		GamePlayLog.record_interaction(outcomeNames[type], false, 0, potentialReward)
+	DataManager.register_calibration_result(false)
 	PauseManager.notify_emerge_finished()
 	interacted = -1
 	letPlayerMove()
@@ -145,6 +147,7 @@ func _on_success() -> void:
 	deathTimer.stop()
 	interacted = 1
 	letPlayerMove()
+	
 
 	if (type == Sprites.goblin):
 		Player.play_attack()
@@ -157,7 +160,11 @@ func _on_success() -> void:
 
 	sprites[type].play("interaction")
 	reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
-	GamePlayLog.record_interaction(outcomeNames[type], true, reactionTime, potentialReward)
+	
+	if not DataManager.calibrating:
+		GamePlayLog.record_interaction(outcomeNames[type], true, reactionTime, potentialReward)
+	DataManager.register_calibration_result(true)
+
 
 	if is_instance_valid($Interaction):
 		$Interaction.queue_free()

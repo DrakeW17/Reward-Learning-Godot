@@ -18,3 +18,4 @@ func _ready() -> void:
 		transitionInstance.global_position.x = (p * 2 + 1) * situationLength
 		add_child(transitionInstance)
 	DataManager.SetInteractionTypes()
+	DataManager.start_calibration()

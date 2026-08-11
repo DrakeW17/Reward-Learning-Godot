@@ -8,7 +8,7 @@ var emerging_count := 0
 
 func _ready() -> void:
 	play_timer = Timer.new()
-	play_timer.wait_time = 480.0 # 8 minutes
+	play_timer.wait_time = 120 #480.0 # 8 minutes
 	play_timer.one_shot = true # still one_shot -- we manually restart it each cycle
 	add_child(play_timer)
 	play_timer.timeout.connect(_on_play_timer_timeout)
@@ -38,6 +38,9 @@ func _try_pause() -> void:
 		pause_pending = false
 		get_tree().paused = true
 		pause_ui.fade_out()
+		
+		if DataManager.calibrating:
+			DataManager.finish_calibration()
 
 func _on_resume_pressed() -> void:
 	pause_ui.start_countdown()
