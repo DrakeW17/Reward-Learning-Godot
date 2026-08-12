@@ -90,7 +90,10 @@ func _process(delta: float) -> void:
 # Function for increasing the score
 func scoreIncrease(amount: int) -> void:
 	# Spawns UI particles
-	scoreIncreaseParticles.amount = abs(amount) * 5
+	if amount > 0:
+		scoreIncreaseParticles.amount = amount * 5
+	else:
+		scoreIncreaseParticles.amount = 0
 	scoreIncreaseParticles.emitting = true
 	# Updates the player's score
 	score += amount
@@ -100,8 +103,10 @@ func flash_red() -> void:
 		flash_tween.kill() # stop any flash already in progress
 	
 	animatedSprite.modulate = Color(1, 0, 0) # solid red
+	$CanvasLayer/Score.modulate = Color(1, 0, 0)
 	flash_tween = create_tween()
 	flash_tween.tween_property(animatedSprite, "modulate", Color(1, 1, 1), 0.5) # fade back to normal
+	flash_tween.parallel().tween_property($CanvasLayer/Score, "modulate", Color(1, 1, 1), 0.5)
 
 func transitionToScene(path: String):
 	var tween = create_tween()
