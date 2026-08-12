@@ -294,3 +294,9 @@ lifetime = 0.54
 one_shot = true
 explosiveness = 0.91
 process_material = SubResource("ParticleProcessMaterial_5c2io")
+
+[node name="BlackTransition" type="Sprite2D" parent="CanvasLayer" unique_id=1678977479]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(576, 324)
+scale = Vector2(36, 20.25)
+texture = ExtResource("1_mv1ah")

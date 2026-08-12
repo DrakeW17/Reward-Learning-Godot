@@ -34,12 +34,14 @@ var score = 50
 @onready var scoreUI = $CanvasLayer/Score
 @onready var scoreIncreaseParticles = $CanvasLayer/ScoreIncreaseParticles
 @onready var animatedSprite = $AnimatedSprite2D
+@onready var transition = $CanvasLayer/BlackTransition
 
 
 func _ready() -> void:
 	# Plays idle animation upon game start
 	animatedSprite.play("idle")
 	animatedSprite.animation_finished.connect(_on_animated_sprite_2d_animation_finished)
+	create_tween().tween_property(transition, "modulate:a", 0, 1)
 	
 func _physics_process(delta: float) -> void:
 	if canMove and not inputPrimed:
@@ -92,7 +94,6 @@ func scoreIncrease(amount: int) -> void:
 	scoreIncreaseParticles.emitting = true
 	# Updates the player's score
 	score += amount
-	
 
 func flash_red() -> void:
 	if is_instance_valid(flash_tween):
@@ -101,3 +102,8 @@ func flash_red() -> void:
 	animatedSprite.modulate = Color(1, 0, 0) # solid red
 	flash_tween = create_tween()
 	flash_tween.tween_property(animatedSprite, "modulate", Color(1, 1, 1), 0.5) # fade back to normal
+
+func transitionToScene(path: String):
+	var tween = create_tween()
+	await tween.tween_property(transition, "modulate:a", 1, 1).finished
+	get_tree().change_scene_to_file(path)
