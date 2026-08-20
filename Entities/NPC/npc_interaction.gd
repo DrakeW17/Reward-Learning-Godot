@@ -4,7 +4,7 @@ signal player_interacted
 
 # Reference to the animation player
 @onready var animations = $AnimationPlayer
-
+@export var falseStartDisabled = false  # blocks false-start penalty only -- still allows success 
 #Variables for logging
 const typeNames = ["goblin", "archer", "angel"]
 var flashStartTime := 0.0
@@ -148,7 +148,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if isFlashing and interacted == 0 and event.is_action_pressed("move_right"):
 		_on_success()
 		emit_signal("player_interacted")
-	elif awaitingReaction:
+	elif awaitingReaction and not falseStartDisabled:
 		_on_false_start()
 
 func _on_success() -> void:
@@ -185,10 +185,10 @@ func _on_start_interaction_timer_timeout() -> void:
 		animations.play("emerge")
 		sprites[type].play("idle")
 		emergePlayed = true
-		awaitingReaction = true # false-start window begins here
 
 #If player hits too early
 func _on_false_start() -> void:
+	print("false start!")
 	awaitingReaction = false
 	isFlashing = false
 	deathTimer.stop()
@@ -209,6 +209,8 @@ func _on_false_start() -> void:
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "emerge":
 		anticipatoryDelayTimer.start(randf_range(2.0, 2.5))
+		awaitingReaction = true # false-start window begins here
+
 
 # Starts the flash/interaction window after the anticipatory delay
 func _on_anticipatory_delay_timer_timeout() -> void:

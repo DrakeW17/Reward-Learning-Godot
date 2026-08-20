@@ -3,3 +3,12 @@
 /android/
 Reward Learning Platformer.dmg
 .DS_Store
+# Godot exports
+*.exe
+*.pck
+*.zip
+*.dmg
+*.console.exe
+
+# macOS
+.DS_Store

@@ -30,10 +30,12 @@ deathTimerOverride = 0
 
 [node name="GoblinInteract" parent="." unique_id=2103283229 instance=ExtResource("2_oec71")]
 position = Vector2(667, 0)
+falseStartDisabled = true
 deathTimerOverride = -2
 
 [node name="AngelInteract" parent="." unique_id=1738775584 instance=ExtResource("2_oec71")]
 position = Vector2(951, 0)
+falseStartDisabled = true
 deathTimerOverride = -2
 
 [node name="ArcherInteract" parent="." unique_id=830158122 instance=ExtResource("2_oec71")]
