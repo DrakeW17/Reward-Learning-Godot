@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://ce1xi6ucsrwrf"]
+
+[ext_resource type="FontFile" uid="uid://drdluivkno5p8" path="res://Assets/UI/Fonts/Germania_One/GermaniaOne-Regular.ttf" id="1_rte6l"]
+[ext_resource type="Script" uid="uid://cu5sugr73p5rs" path="res://Levels/startmenu.gd" id="2_86ed3"]
+
+[node name="StartMenu" type="Control" unique_id=1687543196]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 560.0
+offset_top = 356.0
+offset_right = 560.0
+offset_bottom = 356.0
+script = ExtResource("2_86ed3")
+
+[node name="TitleLabel" type="Label" parent="." unique_id=420458324]
+layout_mode = 0
+offset_left = -203.0
+offset_top = -136.0
+offset_right = 201.0
+offset_bottom = -45.0
+theme_override_fonts/font = ExtResource("1_rte6l")
+theme_override_font_sizes/font_size = 77
+text = "Choose Mode"
+horizontal_alignment = 1
+
+[node name="TutorialButton" type="Button" parent="." unique_id=1101471675]
+layout_mode = 0
+offset_left = -170.0
+offset_top = -27.0
+offset_right = -10.0
+offset_bottom = 18.0
+theme_override_fonts/font = ExtResource("1_rte6l")
+theme_override_font_sizes/font_size = 31
+text = "Tutorial"
+
+[node name="GamePlayButton" type="Button" parent="." unique_id=48187496]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -27.0
+offset_right = 170.0
+offset_bottom = 18.0
+theme_override_fonts/font = ExtResource("1_rte6l")
+theme_override_font_sizes/font_size = 31
+text = "Main Game"

@@ -2,7 +2,7 @@ extends Node2D
 
 const TextSpeed = 0.05
 
-@onready var transitionPath = "res://main_scene.tscn"
+@onready var transitionPath = "res://Levels/StartMenu.tscn"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

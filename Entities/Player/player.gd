@@ -12,7 +12,6 @@ var isAttacking = false
 #tween variable for red flashing
 var flash_tween: Tween
 
-
 #The friction (acts as an involuntary deceleration)
 var friction = 600
 # The strength of gravity on the player

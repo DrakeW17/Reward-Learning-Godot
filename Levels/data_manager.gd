@@ -7,8 +7,8 @@ var calibrating = false
 var calibrationTrialCount = 0
 const STEP_UP = 0.033                  # miss -> window grows (easier), 66% weight
 const STEP_DOWN = 0.017                # hit -> window shrinks (harder), 34% weight
-const MIN_WINDOW = 0.2					#flashing window
-const MAX_WINDOW = 2.0
+const MIN_WINDOW = 0.2					#minimum flashing window
+const MAX_WINDOW = 2.0					#maximum flashing window 
 var windowHistory: Array = []
 
 # The amount of NPC interactions we want to generate
