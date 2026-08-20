@@ -11,6 +11,10 @@ var flashStartTime := 0.0
 var reactionTime
 var potentialReward = 0
 var isFlashing = false
+var awaitingReaction = false # true from emerge start through end of flash phase — covers the whole button mashing window
+
+
+@export var interactionDisabled = false # if true, this NPC can't be succeeded OR false-started -- pure demo/passive NPC
 
 # Stores each sprite's original position, before any scale-compensation is applied
 var spriteBasePositions = []
@@ -112,6 +116,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 # When the player fails to interact
 func _on_death_timer_timeout() -> void:
 	isFlashing = false
+	awaitingReaction = false
 	sprites[type].play("no_interaction")
 	if (type == 0):
 		await get_tree().create_timer(0.3).timeout
@@ -138,16 +143,20 @@ func letPlayerMove() -> void:
 
 # When the player interacts
 func _unhandled_input(event: InputEvent) -> void:
+	if interactionDisabled:
+		return
 	if isFlashing and interacted == 0 and event.is_action_pressed("move_right"):
 		_on_success()
 		emit_signal("player_interacted")
+	elif awaitingReaction:
+		_on_false_start()
 
 func _on_success() -> void:
 	isFlashing = false
+	awaitingReaction = false
 	deathTimer.stop()
 	interacted = 1
 	letPlayerMove()
-	
 
 	if (type == Sprites.goblin):
 		Player.play_attack()
@@ -176,6 +185,25 @@ func _on_start_interaction_timer_timeout() -> void:
 		animations.play("emerge")
 		sprites[type].play("idle")
 		emergePlayed = true
+		awaitingReaction = true # false-start window begins here
+
+#If player hits too early
+func _on_false_start() -> void:
+	awaitingReaction = false
+	isFlashing = false
+	deathTimer.stop()
+	interacted = -1
+	sprites[type].play("no_interaction")
+	if (type == 0):
+		await get_tree().create_timer(0.3).timeout
+		Player.flash_red()
+	reactionTime = -1.0 # or 0, however you want to flag "pressed too early" in the log
+	if not DataManager.calibrating:
+		GamePlayLog.record_interaction(outcomeNames[type], false, reactionTime, potentialReward)
+	DataManager.register_calibration_result(false)
+	PauseManager.notify_emerge_finished()
+	letPlayerMove()
+
 
 # When the emerge animation finishes, wait a random amount between 2 and 2.5s before flashing
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
