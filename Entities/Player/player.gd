@@ -20,7 +20,7 @@ var gravity = 1000
 # The acceleration of the player's movement
 var acceleration = 550 + friction
 # The maximum speed the player can achieve via standerd movement
-var maxSpeed = 150
+var maxSpeed = 100
 # The jump strength of the player
 var jumpStrength = 250
 # The player's inability to move while in the air (lower = more control) 
@@ -28,6 +28,11 @@ var airControl = 0.8
 
 # Keeps track of the player's score
 var score = 50
+
+var rewardFlashTween: Tween
+var isFlashingScore = false # NEW: suppresses _process() overwriting the flash text
+
+
 
 # Helpful paths
 @onready var scoreUI = $CanvasLayer/Score
@@ -83,8 +88,8 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 		isAttacking = false
 
 func _process(delta: float) -> void:
-	# Updates the score UI
-	scoreUI.text = "Coins: " + str(score)
+	if not isFlashingScore:
+		scoreUI.text = "Coins: " + str(score)
 
 # Function for increasing the score
 func scoreIncrease(amount: int) -> void:
@@ -99,15 +104,36 @@ func scoreIncrease(amount: int) -> void:
 
 func flash_red() -> void:
 	if is_instance_valid(flash_tween):
-		flash_tween.kill() # stop any flash already in progress
-	
-	animatedSprite.modulate = Color(1, 0, 0) # solid red
-	$CanvasLayer/Score.modulate = Color(1, 0, 0)
+		flash_tween.kill()
+	animatedSprite.modulate = Color(1, 0, 0)
 	flash_tween = create_tween()
-	flash_tween.tween_property(animatedSprite, "modulate", Color(1, 1, 1), 0.5) # fade back to normal
-	flash_tween.parallel().tween_property($CanvasLayer/Score, "modulate", Color(1, 1, 1), 0.5)
+	flash_tween.tween_property(animatedSprite, "modulate", Color(1, 1, 1), 0.5)
 
 func transitionToScene(path: String):
 	var tween = create_tween()
 	await tween.tween_property(transition, "modulate:a", 1, 1).finished
 	get_tree().change_scene_to_file(path)
+
+func show_reward_popup(amount: int) -> void:
+	if is_instance_valid(rewardFlashTween):
+		rewardFlashTween.kill()
+
+	var flashText: String
+	var colorHex: String
+
+	if amount > 0:
+		colorHex = "#00FF00" # green
+		flashText = "[center][color=%s]+%d[/color][/center]" % [colorHex, amount]
+	elif amount < 0:
+		colorHex = "#FF0000" # red
+		flashText = "[center][color=%s]%d[/color][/center]" % [colorHex, amount]
+	else:
+		colorHex = "#FFFFFF"
+		flashText = "[center][color=%s]+0[/color][/center]" % colorHex
+
+	isFlashingScore = true
+	scoreUI.text = flashText # if bbcode_enabled is true, this parses the tags directly
+
+	await get_tree().create_timer(1.5).timeout
+
+	isFlashingScore = false

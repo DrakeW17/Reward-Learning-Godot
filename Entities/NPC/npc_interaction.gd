@@ -115,8 +115,11 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 
 # When the player fails to interact
 func _on_death_timer_timeout() -> void:
+	if interacted != 0:
+		return
 	isFlashing = false
 	awaitingReaction = false
+	anticipatoryDelayTimer.stop() 
 	sprites[type].play("no_interaction")
 	if (type == 0):
 		await get_tree().create_timer(0.3).timeout
@@ -131,7 +134,10 @@ func _on_death_timer_timeout() -> void:
 # When the interaction is finished
 func _on_sprite_animation_finished() -> void:
 	# Updates the player's score
-	Player.scoreIncrease(int(pow(5, power) * (float(1.0/2.0) * abs(type - 1) * (type - 1 + interacted))))
+	var amount = int(pow(5, power) * (float(1.0/2.0) * abs(type - 1) * (type - 1 + interacted)))
+	Player.scoreIncrease(amount)
+	Player.show_reward_popup(amount)
+
 	# Deletes the NPC
 	queue_free()
 
@@ -144,15 +150,25 @@ func letPlayerMove() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if interactionDisabled:
 		return
-	if isFlashing and interacted == 0 and event.is_action_pressed("move_right"):
+	if not event.is_action_pressed("move_right"):
+		return
+	if interacted != 0:
+		return
+
+	print("input received - isFlashing: ", isFlashing, " awaitingReaction: ", awaitingReaction)
+
+	if isFlashing:
 		_on_success()
 		emit_signal("player_interacted")
 	elif awaitingReaction and not falseStartDisabled:
 		_on_false_start()
+	else:
+		print("NEITHER branch triggered -- stuck!")
 
 func _on_success() -> void:
 	isFlashing = false
 	awaitingReaction = false
+	anticipatoryDelayTimer.stop() 
 	deathTimer.stop()
 	interacted = 1
 	letPlayerMove()
@@ -188,6 +204,7 @@ func _on_start_interaction_timer_timeout() -> void:
 func _on_false_start() -> void:
 	print("false start!")
 	awaitingReaction = false
+	anticipatoryDelayTimer.stop() 
 	isFlashing = false
 	deathTimer.stop()
 	interacted = -1

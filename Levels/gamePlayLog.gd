@@ -16,6 +16,7 @@ func _ready() -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_write_final_summary()
 		get_tree().quit()
 
 func record_interaction(interaction_type: String, success: bool, reaction_time: float, reward_amount: float) -> void:
@@ -61,3 +62,32 @@ func _unhandled_input(event: InputEvent) -> void:
 		first_t_recorded = true
 		last_t_time_ms = Time.get_ticks_msec()
 		record_interaction("Scanning Start Time", true, 0.0, 0.0)
+
+func get_success_percentage() -> float:
+	var real_interactions = log_entries.filter(func(e): return e.interaction_type != "Scanning Start Time")
+	if real_interactions.is_empty():
+		return 0.0
+	var successes = real_interactions.filter(func(e): return e.success == true)
+	return (float(successes.size()) / float(real_interactions.size())) * 100.0
+	
+func _write_final_summary() -> void:
+	var successRate = get_success_percentage()
+	var npcIndex = DataManager.npcIndex
+
+	var file
+	if FileAccess.file_exists(log_path):
+		file = FileAccess.open(log_path, FileAccess.READ_WRITE)
+	else:
+		file = FileAccess.open(log_path, FileAccess.WRITE)
+
+	if file == null:
+		push_error("GameplayLog: failed to open file for writing at " + log_path)
+		return
+
+	file.seek_end()
+	file.store_line("") # blank line separates the summary from the interaction rows
+	file.store_line("session_summary_timestamp,success_rate_percent,final_npc_index")
+	file.store_line("%s,%.1f,%d" % [Time.get_datetime_string_from_system(), successRate, npcIndex])
+	file.close()
+
+	print("GameplayLog: session summary written -- success rate: %.1f%%, final index: %d" % [successRate, npcIndex])

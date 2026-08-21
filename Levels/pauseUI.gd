@@ -5,6 +5,8 @@ signal resume_pressed
 @onready var prompt_label: Label = $PromptLabel
 @onready var countdown_label: Label = $CountdownLabel
 @onready var fade_overlay: ColorRect = $FadeOverlay
+@onready var index_label: Label = $IndexLabel
+@onready var percentage_label: Label = $PercentageLabel
 
 var waiting_for_input := false
 var waiting_for_unlock := false
@@ -13,6 +15,8 @@ var fade_tween: Tween
 func _ready() -> void:
 	countdown_label.visible = false
 	prompt_label.visible = false
+	index_label.visible = false
+	percentage_label.visible = false
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	fade_overlay.color.a = 0.0
 	fade_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -36,6 +40,14 @@ func fade_out() -> void:
 
 	prompt_label.visible = true
 	prompt_label.text = "Game paused for break"
+	
+	index_label.visible = true
+	index_label.text = "NPC index: %d" % DataManager.npcIndex
+
+	percentage_label.visible = true
+	var successRate = GamePlayLog.get_success_percentage()
+	percentage_label.text = "Success rate: %.1f%%" % successRate
+
 
 	if is_instance_valid(fade_tween):
 		fade_tween.kill()

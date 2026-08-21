@@ -18,38 +18,23 @@ var npcLabels = ['sm_goblin', 'sm_goblin', 'md_goblin', 'sm_goblin', 'lg_goblin'
 var placedInteractions = []
 var interactionTypesAvailable = []
 
-# --- NEW: persistent progress tracking ---
 var npcIndex = 0
-const PROGRESS_SAVE_PATH = "user://npc_progress.save"
 
 func _ready() -> void:
 	print("DataManager _ready, loading progress...")
-	_load_progress()
-	print("npcIndex after load: ", npcIndex)
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		_save_progress()
 
-func _load_progress() -> void:
-	if FileAccess.file_exists(PROGRESS_SAVE_PATH):
-		var file = FileAccess.open(PROGRESS_SAVE_PATH, FileAccess.READ)
-		if file:
-			var loaded = file.get_var()
-			file.close()
-			if typeof(loaded) == TYPE_INT:
-				npcIndex = loaded
-				print("Loaded NPC progress: starting at index ", npcIndex)
 
-func _save_progress() -> void:
-	var file = FileAccess.open(PROGRESS_SAVE_PATH, FileAccess.WRITE)
-	if file:
-		file.store_var(npcIndex)
-		file.close()
+func set_starting_index(index: int) -> void:
+	npcIndex = index
+	print("Starting NPC index set to: ", npcIndex)
 
 func _next_npc_label() -> String:
-	var label = npcLabels[npcIndex % npcLabels.size()] # loops back to start once past the end
+	var label = npcLabels[npcIndex]
 	npcIndex += 1
-	_save_progress() # save after every advance, so an abrupt quit still preserves progress
+	
+	if npcIndex >= npcLabels.size():
+		npcIndex = 0
+	
 	return label
 
 func SetInteractionTypes() -> void:

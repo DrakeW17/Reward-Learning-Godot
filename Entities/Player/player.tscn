@@ -282,6 +282,7 @@ offset_right = 725.0
 offset_bottom = 550.0
 theme_override_fonts/normal_font = ExtResource("3_lu8i8")
 theme_override_font_sizes/normal_font_size = 75
+bbcode_enabled = true
 text = "Coins: 0"
 
 [node name="ScoreIncreaseParticles" type="GPUParticles2D" parent="CanvasLayer" unique_id=835851950]

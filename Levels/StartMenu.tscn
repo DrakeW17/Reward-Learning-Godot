@@ -69,3 +69,12 @@ theme_override_font_sizes/font_size = 80
 text = "+"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="IndexInput" type="LineEdit" parent="." unique_id=2020762854]
+layout_mode = 0
+offset_left = -67.0
+offset_top = 59.0
+offset_right = 66.0
+offset_bottom = 90.0
+theme_override_font_sizes/font_size = 12
+placeholder_text = "Starting Index:"
