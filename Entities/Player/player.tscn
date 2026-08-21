@@ -248,7 +248,7 @@ radial_velocity_max = 399.99997
 gravity = Vector3(0, 0, 0)
 scale_curve = SubResource("CurveTexture_tekja")
 
-[node name="Player" type="CharacterBody2D" unique_id=1511582234]
+[node name="Player" type="CharacterBody2D" unique_id=1511582234 groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_3uyv8")
 

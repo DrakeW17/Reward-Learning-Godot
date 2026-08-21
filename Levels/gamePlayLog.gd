@@ -57,6 +57,8 @@ func clear_log() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"): # Escape by default
 		export_log()
+	if event.is_action_pressed("abort_game"):
+		export_log()
 	if event.is_action_pressed("T"):
 		last_t_time_ms = Time.get_ticks_msec()
 		record_interaction("Scanning Start Time", true, 0.0, 0.0)

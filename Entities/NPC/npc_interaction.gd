@@ -122,10 +122,9 @@ func _on_death_timer_timeout() -> void:
 		await get_tree().create_timer(0.3).timeout
 		Player.flash_red()
 	reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
-	if not DataManager.calibrating:
-		GamePlayLog.record_interaction(outcomeNames[type], false, 0, potentialReward)
+	#if not DataManager.calibrating:
+	GamePlayLog.record_interaction(outcomeNames[type], false, 0, potentialReward)
 	DataManager.register_calibration_result(false)
-	PauseManager.notify_emerge_finished()
 	interacted = -1
 	letPlayerMove()
 
@@ -170,8 +169,8 @@ func _on_success() -> void:
 	sprites[type].play("interaction")
 	reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
 	
-	if not DataManager.calibrating:
-		GamePlayLog.record_interaction(outcomeNames[type], true, reactionTime, potentialReward)
+	#if not DataManager.calibrating:
+	GamePlayLog.record_interaction(outcomeNames[type], true, reactionTime, potentialReward)
 	DataManager.register_calibration_result(true)
 
 
@@ -181,7 +180,6 @@ func _on_success() -> void:
 func _on_start_interaction_timer_timeout() -> void:
 	# Emerges if it has not already done so
 	if not emergePlayed:
-		PauseManager.notify_emerge_started()
 		animations.play("emerge")
 		sprites[type].play("idle")
 		emergePlayed = true
@@ -198,10 +196,9 @@ func _on_false_start() -> void:
 		await get_tree().create_timer(0.3).timeout
 		Player.flash_red()
 	reactionTime = -1.0 # or 0, however you want to flag "pressed too early" in the log
-	if not DataManager.calibrating:
-		GamePlayLog.record_interaction(outcomeNames[type], false, reactionTime, potentialReward)
+	#if not DataManager.calibrating:
+	GamePlayLog.record_interaction(outcomeNames[type], false, reactionTime, potentialReward)
 	DataManager.register_calibration_result(false)
-	PauseManager.notify_emerge_finished()
 	letPlayerMove()
 
 
@@ -221,5 +218,4 @@ func _on_anticipatory_delay_timer_timeout() -> void:
 		deathTimer.start(0.1)
 	sprites[type].play("flash")
 	flashStartTime = Time.get_ticks_msec() / 1000.0
-	PauseManager.notify_emerge_finished()
 	isFlashing = true

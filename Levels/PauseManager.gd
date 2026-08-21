@@ -1,46 +1,18 @@
 extends Node
-
-var play_timer: Timer
-var pause_pending := false
-var emerging_count := 0
-
 @onready var pause_ui: CanvasLayer
 
 func _ready() -> void:
-	play_timer = Timer.new()
-	play_timer.wait_time = 60 # 480.0 # 8 minutes
-	play_timer.one_shot = true # still one_shot -- we manually restart it each cycle
-	add_child(play_timer)
-	play_timer.timeout.connect(_on_play_timer_timeout)
-	play_timer.start()
-
 	pause_ui = preload("res://Levels/PauseUI.tscn").instantiate()
 	pause_ui.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(pause_ui)
 	pause_ui.visible = false
 	pause_ui.resume_pressed.connect(_on_resume_pressed)
-	
 
-func _on_play_timer_timeout() -> void:
-	pause_pending = true
-	_try_pause()
-
-func notify_emerge_started() -> void:
-	emerging_count += 1
-
-func notify_emerge_finished() -> void:
-	emerging_count = max(0, emerging_count - 1)
-	_try_pause()
-
-func _try_pause() -> void:
-	if pause_pending and emerging_count == 0:
-		print("paused")
-		pause_pending = false
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("manual_pause"):
 		get_tree().paused = true
+		_set_hud_visible(false)
 		pause_ui.fade_out()
-		
-		if DataManager.calibrating:
-			DataManager.finish_calibration()
 
 func _on_resume_pressed() -> void:
 	pause_ui.start_countdown()
@@ -48,4 +20,9 @@ func _on_resume_pressed() -> void:
 func actually_resume() -> void:
 	get_tree().paused = false
 	pause_ui.visible = false
-	play_timer.start() # restart the 8-minute cycle now that play has resumed
+	_set_hud_visible(true)
+
+func _set_hud_visible(is_visible: bool) -> void:
+	var player = get_tree().get_first_node_in_group("player") 
+	if player:
+		player.scoreUI.visible = is_visible
