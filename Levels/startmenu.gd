@@ -6,6 +6,8 @@ extends Control
 @onready var fixationCross: Label = $FixationCross
 @onready var titleLabel: Label = $TitleLabel
 
+var t_received = false
+
 var waiting_for_start := false # true once T has been received, now waiting on S
 
 func _ready() -> void:
@@ -20,8 +22,9 @@ func _ready() -> void:
 	titleLabel.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("T") and not waiting_for_start:
+	if event.is_action_pressed("T") and not waiting_for_start and not t_received:
 		waiting_for_start = true
+		t_received = true
 		print("Scan sync received, waiting for experimenter to press S")
 		return
 
