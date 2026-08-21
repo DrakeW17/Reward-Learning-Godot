@@ -11,9 +11,6 @@ var waiting_for_unlock := false
 var fade_tween: Tween
 
 func _ready() -> void:
-	print("prompt_label: ", prompt_label)
-	print("countdown_label: ", countdown_label)
-	print("fade_overlay: ", fade_overlay)
 	countdown_label.visible = false
 	prompt_label.visible = false
 	process_mode = Node.PROCESS_MODE_ALWAYS
