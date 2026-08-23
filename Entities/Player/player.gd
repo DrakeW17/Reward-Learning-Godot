@@ -96,9 +96,8 @@ func scoreIncrease(amount: int) -> void:
 	# Spawns UI particles
 	if amount > 0:
 		scoreIncreaseParticles.amount = amount * 5
-	else:
-		scoreIncreaseParticles.amount = 0
-	scoreIncreaseParticles.emitting = true
+		scoreIncreaseParticles.emitting = true
+
 	# Updates the player's score
 	score += amount
 

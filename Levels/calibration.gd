@@ -1,22 +1,23 @@
 extends Node2D
-
 # The possible transition situations
-const transitionSituations = [preload("res://Levels/test_scene.tscn"),preload("res://Levels/situation_1.tscn")]
+const transitionSituations = [preload("res://Levels/test_scene.tscn"), preload("res://Levels/situation_1.tscn")]
 # The width of one situation
-const situationLength = 320
-
-# Sets up the levels
+const situationLength = 120
 func _ready() -> void:
 	DataManager.placedInteractions.clear()
 	for p in range(DataManager.interactionAmount):
-		# Loads in one interaction
 		var interactionInstance = preload("res://Levels/NPC_situation.tscn").instantiate()
 		interactionInstance.global_position.x = p * situationLength * 2
 		add_child(interactionInstance)
 		DataManager.placedInteractions.append(interactionInstance)
-		#Loads in one transition after this interaction
 		var transitionInstance = transitionSituations[randi() % transitionSituations.size()].instantiate()
 		transitionInstance.global_position.x = (p * 2 + 1) * situationLength
 		add_child(transitionInstance)
-	DataManager.SetInteractionTypes()
-	DataManager.start_main_game_tracking()
+	_set_calibration_labels()
+	DataManager.start_precalibration()
+func _set_calibration_labels() -> void:
+	for interaction in DataManager.placedInteractions:
+		interaction.NPC.Set(DataManager._calibration_npc_label())
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("end_calibration") and DataManager.calibrating:
+		DataManager.finish_precalibration()

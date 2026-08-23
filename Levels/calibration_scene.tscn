@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bb5fgyktm2bq"]
+
+[ext_resource type="Script" uid="uid://d32fxj2rr6r8i" path="res://Levels/calibration.gd" id="1_lc8h3"]
+[ext_resource type="Texture2D" uid="uid://2yhk2f4jg1nh" path="res://templateSquare.png" id="2_0li65"]
+[ext_resource type="PackedScene" uid="uid://d1dfq0nifyccg" path="res://Entities/Player/player.tscn" id="3_kle6a"]
+
+[node name="MainScene" type="Node2D" unique_id=300163434]
+script = ExtResource("1_lc8h3")
+
+[node name="Sky" type="Parallax2D" parent="." unique_id=1049650671]
+scroll_scale = Vector2(0, 0)
+
+[node name="Sky" type="Sprite2D" parent="Sky" unique_id=544433765]
+modulate = Color(0.4278, 0.66814995, 0.69, 1)
+position = Vector2(551.99994, 295.99997)
+scale = Vector2(34.52, 17.840004)
+texture = ExtResource("2_0li65")
+
+[node name="Player" parent="." unique_id=1511582234 instance=ExtResource("3_kle6a")]
+position = Vector2(-8, -1)

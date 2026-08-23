@@ -137,7 +137,8 @@ func _on_sprite_animation_finished() -> void:
 	var amount = int(pow(5, power) * (float(1.0/2.0) * abs(type - 1) * (type - 1 + interacted)))
 	Player.scoreIncrease(amount)
 	Player.show_reward_popup(amount)
-
+	
+	DataManager.advance_npc_index()
 	# Deletes the NPC
 	queue_free()
 
@@ -155,15 +156,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if interacted != 0:
 		return
 
-	print("input received - isFlashing: ", isFlashing, " awaitingReaction: ", awaitingReaction)
 
 	if isFlashing:
 		_on_success()
 		emit_signal("player_interacted")
 	elif awaitingReaction and not falseStartDisabled:
 		_on_false_start()
-	else:
-		print("NEITHER branch triggered -- stuck!")
 
 func _on_success() -> void:
 	isFlashing = false
@@ -176,18 +174,12 @@ func _on_success() -> void:
 	if (type == Sprites.goblin):
 		Player.play_attack()
 
-	if (type == Sprites.angel):
-		var flyUpOffset = Vector2(0, -40)
-		var flyTween = create_tween()
-		flyTween.tween_property(sprites[type], "position", spriteBasePositions[type] + flyUpOffset, 0.5)
-		await flyTween.finished
-
 	sprites[type].play("interaction")
 	reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
 	
-	#if not DataManager.calibrating:
 	GamePlayLog.record_interaction(outcomeNames[type], true, reactionTime, potentialReward)
 	DataManager.register_calibration_result(true)
+	
 
 
 	if is_instance_valid($Interaction):
@@ -202,7 +194,6 @@ func _on_start_interaction_timer_timeout() -> void:
 
 #If player hits too early
 func _on_false_start() -> void:
-	print("false start!")
 	awaitingReaction = false
 	anticipatoryDelayTimer.stop() 
 	isFlashing = false

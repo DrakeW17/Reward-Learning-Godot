@@ -5,6 +5,10 @@ var calibrating = false
 var calibrationTrialCount = 0
 const STEP_UP = 0.033
 const STEP_DOWN = 0.017
+var currentScale = 0.15
+var isPrecalibrating = false
+var isMainGameTracking = false
+
 const MIN_WINDOW = 0.2
 const MAX_WINDOW = 2.0
 var windowHistory: Array = []
@@ -18,10 +22,36 @@ var npcLabels = ['sm_goblin', 'sm_goblin', 'md_goblin', 'sm_goblin', 'lg_goblin'
 var placedInteractions = []
 var interactionTypesAvailable = []
 
+# Ratio that determines the 66% convergence target -- never change this ratio itself
+const STEP_RATIO_UP = 0.66
+const STEP_RATIO_DOWN = 0.34
+
+# Pre-scan calibration: starts coarse, decays toward a fine floor
+var precalStartScale = 0.15
+var precalMinScale = 0.01
+var precalDecayRate = 0.92
+
+# Main game: flat, small, fixed
+const MAIN_GAME_SCALE = 0.01
+
+# Random throwaway label for calibration -- never touches npcIndex/npcLabels
+func _calibration_npc_label() -> String:
+	var sizes = ["sm", "md", "lg"]
+	var types = ["goblin", "angel", "archer"]
+	return sizes[randi() % sizes.size()] + "_" + types[randi() % types.size()]
+
+# --- Pre-scan calibration: decaying step size, converges toward 66% ---
+func start_precalibration() -> void:
+	calibrating = true
+	isPrecalibrating = true
+	isMainGameTracking = false
+	calibrationTrialCount = 0
+	windowHistory.clear()
+	currentScale = precalStartScale
+	reactionTime = 0.7
+
 var npcIndex = 0
 
-func _ready() -> void:
-	print("DataManager _ready, loading progress...")
 
 
 func set_starting_index(index: int) -> void:
@@ -37,12 +67,16 @@ func _next_npc_label() -> String:
 	
 	return label
 
+func advance_npc_index() -> void:
+	npcIndex += 1
+	if npcIndex >= npcLabels.size():
+		npcIndex = 0
+
 func SetInteractionTypes() -> void:
 	for i in range(placedInteractions.size()):
 		placedInteractions[i].NPC.Set(_next_npc_label())
 
 func start_calibration() -> void:
-	print("calibration started")
 	calibrating = true
 	calibrationTrialCount = 0
 	windowHistory.clear()
@@ -51,16 +85,48 @@ func start_calibration() -> void:
 func register_calibration_result(success: bool) -> void:
 	if not calibrating:
 		return
+
 	calibrationTrialCount += 1
+
+	if isPrecalibrating:
+		currentScale = max(precalMinScale, currentScale * precalDecayRate)
+
+	var stepUp = STEP_RATIO_UP * currentScale
+	var stepDown = STEP_RATIO_DOWN * currentScale
+
 	if success:
-		reactionTime = max(MIN_WINDOW, reactionTime - STEP_DOWN)
-		print("success")
+		reactionTime = max(MIN_WINDOW, reactionTime - stepDown)
+		print("success, reactionTime: ", reactionTime)
 	else:
-		reactionTime = min(MAX_WINDOW, reactionTime + STEP_UP)
-		print("fail")
-	if calibrationTrialCount > 5:
+		reactionTime = min(MAX_WINDOW, reactionTime + stepUp)
+		print("fail, reactionTime: ", reactionTime)
+
+	if isPrecalibrating and calibrationTrialCount > 5:
 		windowHistory.append(reactionTime)
 
+		
+# --- Main game: flat, small fixed step, continues from calibrated reactionTime ---
+func start_main_game_tracking() -> void:
+	print("Main game tracking started from reactionTime: ", reactionTime)
+	calibrating = true
+	isPrecalibrating = false
+	isMainGameTracking = true
+	calibrationTrialCount = 0
+	windowHistory.clear()
+	currentScale = MAIN_GAME_SCALE
+	# reactionTime intentionally NOT reset -- keeps whatever calibration produced
+
+func finish_precalibration() -> void:
+	if not windowHistory.is_empty():
+		var sum = 0.0
+		for w in windowHistory:
+			sum += w
+		reactionTime = sum / windowHistory.size()
+	calibrating = false
+	isPrecalibrating = false
+	print("Pre-scan calibration finished. Final reactionTime: ", reactionTime)
+	get_tree().change_scene_to_file("res://Levels/StartMenu.tscn")
+	
 func finish_calibration() -> void:
 	if not windowHistory.is_empty():
 		var sum = 0.0
@@ -68,5 +134,4 @@ func finish_calibration() -> void:
 			sum += w
 		reactionTime = sum / windowHistory.size()
 	calibrating = false
-	print("Calibration finished. Final reactionTime: ", reactionTime)
 	get_tree().change_scene_to_file("res://MainGame.tscn")
