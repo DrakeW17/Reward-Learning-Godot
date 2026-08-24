@@ -8,7 +8,7 @@ const STEP_DOWN = 0.017
 var currentScale = 0.15
 var isPrecalibrating = false
 var isMainGameTracking = false
-var startingBalanceCents = 4000 # default $40.00
+var startingBalanceCents = 0 # default $0.00
 
 const MIN_WINDOW = 0.2
 const MAX_WINDOW = 2.0

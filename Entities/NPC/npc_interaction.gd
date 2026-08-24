@@ -18,6 +18,7 @@ var reactionTime
 var potentialReward = 0
 var isFlashing = false
 var awaitingReaction = false # true from emerge start through end of flash phase — covers the whole button mashing window
+const rewardMagnitudes = [20, 100, 500] # cents: sm=20¢, md=$1.00, lg=$5.00
 
 
 @export var interactionDisabled = false # if true, this NPC can't be succeeded OR false-started -- pure demo/passive NPC
@@ -84,7 +85,7 @@ func Set(label: String) -> void:
 	
 	
 	# Potential reward: what's at stake if the player succeeds, calculated once and fixed
-	potentialReward = int(pow(5, power) * 4 * (type - 1))  # 4x scaling: sm=4¢, md=20¢, lg=100¢	
+	potentialReward = rewardMagnitudes[power] * (type - 1)
 	#Angel is larger so scale down if angel
 	if (typeKey == 'angel'):
 		# Apply scale
@@ -141,7 +142,7 @@ func _on_death_timer_timeout() -> void:
 # When the interaction is finished
 func _on_sprite_animation_finished() -> void:
 	# Updates the player's score
-	var amount = int(pow(5, power) * 4 * (float(1.0/2.0) * abs(type - 1) * (type - 1 + interacted)))	
+	var amount = int(rewardMagnitudes[power] * (float(1.0/2.0) * abs(type - 1) * (type - 1 + interacted)))
 	Player.scoreIncrease(amount)
 	Player.show_reward_popup(amount)
 	

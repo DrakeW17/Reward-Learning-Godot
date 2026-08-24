@@ -22,8 +22,6 @@ func _ready() -> void:
 	indexInput.text_submitted.connect(_on_index_submitted)
 	reactionTimeInput.text_submitted.connect(_on_reaction_time_submitted)
 	startingAmountInput.text_submitted.connect(_on_starting_amount_submitted)
-
-
 	tutorialButton.visible = true
 	calibrationButton.visible = true
 	mainGameButton.visible = true
