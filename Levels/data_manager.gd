@@ -8,6 +8,7 @@ const STEP_DOWN = 0.017
 var currentScale = 0.15
 var isPrecalibrating = false
 var isMainGameTracking = false
+var startingBalanceCents = 4000 # default $40.00
 
 const MIN_WINDOW = 0.2
 const MAX_WINDOW = 2.0
@@ -96,10 +97,8 @@ func register_calibration_result(success: bool) -> void:
 
 	if success:
 		reactionTime = max(MIN_WINDOW, reactionTime - stepDown)
-		print("success, reactionTime: ", reactionTime)
 	else:
 		reactionTime = min(MAX_WINDOW, reactionTime + stepUp)
-		print("fail, reactionTime: ", reactionTime)
 
 	if isPrecalibrating and calibrationTrialCount > 5:
 		windowHistory.append(reactionTime)
@@ -114,7 +113,6 @@ func start_main_game_tracking() -> void:
 	calibrationTrialCount = 0
 	windowHistory.clear()
 	currentScale = MAIN_GAME_SCALE
-	# reactionTime intentionally NOT reset -- keeps whatever calibration produced
 
 func finish_precalibration() -> void:
 	if not windowHistory.is_empty():

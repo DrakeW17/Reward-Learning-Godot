@@ -8,6 +8,12 @@ signal player_interacted
 #Variables for logging
 const typeNames = ["goblin", "archer", "angel"]
 var flashStartTime := 0.0
+var t_bush_interact := ""
+var t_emerge := ""
+var t_anticipatory_start := ""
+var t_anticipatory_end := ""
+var t_outcome_animation := ""
+var t_hit_or_miss := ""
 var reactionTime
 var potentialReward = 0
 var isFlashing = false
@@ -44,8 +50,7 @@ var power = 0
 @onready var anticipatoryDelayTimer = $AnticipatoryDelayTimer
 
 # Overriding the death timer. -1 = no override, -2 = infinite time
-@export var deathTimerOverride = -1
-
+@export var deathTimerOverride: int = -1
 # Saves the interacting body
 var Player
 
@@ -79,8 +84,7 @@ func Set(label: String) -> void:
 	
 	
 	# Potential reward: what's at stake if the player succeeds, calculated once and fixed
-	potentialReward = int(pow(5, power) * (type - 1))
-	
+	potentialReward = int(pow(5, power) * 4 * (type - 1))  # 4x scaling: sm=4¢, md=20¢, lg=100¢	
 	#Angel is larger so scale down if angel
 	if (typeKey == 'angel'):
 		# Apply scale
@@ -111,12 +115,15 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	# Prevents the player from moving
 	Player.canMove = false
 	# Starts the interaction timer
-	interactionTimer.start(randf_range(0, 2))
+	interactionTimer.start(0.25)
+	t_bush_interact = GamePlayLog.get_precise_timestamp()
+
 
 # When the player fails to interact
 func _on_death_timer_timeout() -> void:
 	if interacted != 0:
 		return
+	t_hit_or_miss =  GamePlayLog.get_precise_timestamp()
 	isFlashing = false
 	awaitingReaction = false
 	anticipatoryDelayTimer.stop() 
@@ -126,7 +133,7 @@ func _on_death_timer_timeout() -> void:
 		Player.flash_red()
 	reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
 	#if not DataManager.calibrating:
-	GamePlayLog.record_interaction(outcomeNames[type], false, 0, potentialReward)
+	GamePlayLog.record_interaction(outcomeNames[type], false, 0, potentialReward, t_bush_interact, t_emerge, t_anticipatory_start, t_anticipatory_end, t_hit_or_miss)
 	DataManager.register_calibration_result(false)
 	interacted = -1
 	letPlayerMove()
@@ -134,7 +141,7 @@ func _on_death_timer_timeout() -> void:
 # When the interaction is finished
 func _on_sprite_animation_finished() -> void:
 	# Updates the player's score
-	var amount = int(pow(5, power) * (float(1.0/2.0) * abs(type - 1) * (type - 1 + interacted)))
+	var amount = int(pow(5, power) * 4 * (float(1.0/2.0) * abs(type - 1) * (type - 1 + interacted)))	
 	Player.scoreIncrease(amount)
 	Player.show_reward_popup(amount)
 	
@@ -164,6 +171,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		_on_false_start()
 
 func _on_success() -> void:
+	t_hit_or_miss =  GamePlayLog.get_precise_timestamp() 
 	isFlashing = false
 	awaitingReaction = false
 	anticipatoryDelayTimer.stop() 
@@ -177,9 +185,9 @@ func _on_success() -> void:
 	sprites[type].play("interaction")
 	reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
 	
-	GamePlayLog.record_interaction(outcomeNames[type], true, reactionTime, potentialReward)
+	GamePlayLog.record_interaction(outcomeNames[type], true, reactionTime, potentialReward, t_bush_interact, t_emerge, t_anticipatory_start, t_anticipatory_end, t_hit_or_miss)
 	DataManager.register_calibration_result(true)
-	
+		
 
 
 	if is_instance_valid($Interaction):
@@ -188,12 +196,14 @@ func _on_success() -> void:
 func _on_start_interaction_timer_timeout() -> void:
 	# Emerges if it has not already done so
 	if not emergePlayed:
+		t_emerge =  GamePlayLog.get_precise_timestamp()
 		animations.play("emerge")
 		sprites[type].play("idle")
 		emergePlayed = true
 
 #If player hits too early
 func _on_false_start() -> void:
+	t_hit_or_miss =  GamePlayLog.get_precise_timestamp()
 	awaitingReaction = false
 	anticipatoryDelayTimer.stop() 
 	isFlashing = false
@@ -205,7 +215,7 @@ func _on_false_start() -> void:
 		Player.flash_red()
 	reactionTime = -1.0 # or 0, however you want to flag "pressed too early" in the log
 	#if not DataManager.calibrating:
-	GamePlayLog.record_interaction(outcomeNames[type], false, reactionTime, potentialReward)
+	GamePlayLog.record_interaction(outcomeNames[type], false, reactionTime, potentialReward, t_bush_interact, t_emerge, t_anticipatory_start, t_anticipatory_end, t_hit_or_miss)
 	DataManager.register_calibration_result(false)
 	letPlayerMove()
 
@@ -213,6 +223,7 @@ func _on_false_start() -> void:
 # When the emerge animation finishes, wait a random amount between 2 and 2.5s before flashing
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "emerge":
+		t_anticipatory_start = GamePlayLog.get_precise_timestamp()
 		anticipatoryDelayTimer.start(randf_range(2.0, 2.5))
 		awaitingReaction = true # false-start window begins here
 
@@ -224,6 +235,7 @@ func _on_anticipatory_delay_timer_timeout() -> void:
 	elif deathTimerOverride >= 0:
 		print(deathTimerOverride)
 		deathTimer.start(0.1)
+	t_anticipatory_end = GamePlayLog.get_precise_timestamp()
 	sprites[type].play("flash")
 	flashStartTime = Time.get_ticks_msec() / 1000.0
 	isFlashing = true

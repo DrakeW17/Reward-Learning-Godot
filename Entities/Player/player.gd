@@ -46,6 +46,8 @@ func _ready() -> void:
 	animatedSprite.play("idle")
 	animatedSprite.animation_finished.connect(_on_animated_sprite_2d_animation_finished)
 	create_tween().tween_property(transition, "modulate:a", 0, 1)
+	score = DataManager.startingBalanceCents
+
 	
 func _physics_process(delta: float) -> void:
 	if canMove and not inputPrimed:
@@ -89,8 +91,7 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 
 func _process(delta: float) -> void:
 	if not isFlashingScore:
-		scoreUI.text = "Coins: " + str(score)
-
+		scoreUI.text = "[center]Earnings: $%.2f[/center]" % (score / 100.0)
 # Function for increasing the score
 func scoreIncrease(amount: int) -> void:
 	# Spawns UI particles
@@ -119,16 +120,18 @@ func show_reward_popup(amount: int) -> void:
 
 	var flashText: String
 	var colorHex: String
+	var dollarAmount = amount / 100.0
+
 
 	if amount > 0:
 		colorHex = "#00FF00" # green
-		flashText = "[center][color=%s]+%d[/color][/center]" % [colorHex, amount]
+		flashText = "[center][color=#00FF00]+$%.2f[/color][/center]" % dollarAmount
 	elif amount < 0:
 		colorHex = "#FF0000" # red
-		flashText = "[center][color=%s]%d[/color][/center]" % [colorHex, amount]
+		flashText = "[center][color=#FF0000]-$%.2f[/color][/center]" % abs(dollarAmount)
 	else:
 		colorHex = "#FFFFFF"
-		flashText = "[center][color=%s]+0[/color][/center]" % colorHex
+		flashText = "[center][color=#FFFFFF]+$0.00[/color][/center]"
 
 	isFlashingScore = true
 	scoreUI.text = flashText # if bbcode_enabled is true, this parses the tags directly

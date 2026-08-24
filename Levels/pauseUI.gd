@@ -7,6 +7,8 @@ signal resume_pressed
 @onready var fade_overlay: ColorRect = $FadeOverlay
 @onready var index_label: Label = $IndexLabel
 @onready var percentage_label: Label = $PercentageLabel
+@onready var earnings_label: Label = $EarningsLabel
+@onready var reaction_time_label: Label = $ReactionTimeLabel
 
 var waiting_for_input := false
 var waiting_for_unlock := false
@@ -17,6 +19,8 @@ func _ready() -> void:
 	prompt_label.visible = false
 	index_label.visible = false
 	percentage_label.visible = false
+	earnings_label.visible = false
+	reaction_time_label.visible = false
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	fade_overlay.color.a = 0.0
 	fade_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -43,6 +47,15 @@ func fade_out() -> void:
 	
 	index_label.visible = true
 	index_label.text = "NPC index: %d" % DataManager.npcIndex
+	
+	earnings_label.visible = true
+	var player = get_tree().get_first_node_in_group("player") # requires Player in "player" group
+	if player:
+		earnings_label.text = "Earnings: $%.2f" % (player.score / 100.0)
+
+	reaction_time_label.visible = true
+	reaction_time_label.text = "Reaction window: %.3fs" % DataManager.reactionTime
+
 
 	percentage_label.visible = true
 	var successRate = GamePlayLog.get_success_percentage()
