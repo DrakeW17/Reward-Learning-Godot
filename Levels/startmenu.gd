@@ -32,7 +32,7 @@ func _ready() -> void:
 	startingAmountInput.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("S") and _mainGamePending:
+	if event.is_action_pressed("T") and _mainGamePending:
 		waiting_for_main_game_start = true
 		print("Scan sync received, starting game!")
 		_launch_main_game()
@@ -43,6 +43,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_launch_main_game()
 
 func _on_index_submitted(text: String) -> void:
+	Input.flush_buffered_events() # NEW: discard any stray/queued input from before this point
+	GamePlayLog.first_t_recorded = false
 	print("Starting index:", text)
 	startingIndex = int(text)
 	DataManager.set_starting_index(startingIndex)
@@ -50,6 +52,8 @@ func _on_index_submitted(text: String) -> void:
 	reactionTimeInput.visible = true # ask for reaction time next
 
 func _on_reaction_time_submitted(text: String) -> void:
+	Input.flush_buffered_events() # NEW: discard any stray/queued input from before this point
+	GamePlayLog.first_t_recorded = false
 	var enteredTime = float(text)
 	if enteredTime > 0.0:
 		DataManager.reactionTime = enteredTime
@@ -62,6 +66,8 @@ func _on_reaction_time_submitted(text: String) -> void:
 
 	
 func _on_starting_amount_submitted(text: String) -> void:
+	Input.flush_buffered_events() # NEW: discard any stray/queued input from before this point
+	GamePlayLog.first_t_recorded = false
 	var dollars = float(text)
 	DataManager.startingBalanceCents = int(round(dollars * 100))
 	print("Starting balance set to: $", dollars, " (", DataManager.startingBalanceCents, " cents)")
@@ -85,6 +91,7 @@ func _on_tutorial_pressed() -> void:
 	get_tree().change_scene_to_file("res://Levels/tutorial_scene.tscn")
 
 func _on_main_game_pressed() -> void:
+	Input.flush_buffered_events() # NEW: discard any stray/queued input from before this point
 	indexInput.visible = true
 
 func _launch_main_game() -> void:

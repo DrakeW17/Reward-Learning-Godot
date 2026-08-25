@@ -7,6 +7,8 @@ var header_written = false
 var first_t_recorded = false 
 
 func _ready() -> void:
+	Input.flush_buffered_events() # NEW: discard any stray/queued input from before this point
+
 	get_tree().set_auto_accept_quit(false)
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
@@ -71,7 +73,7 @@ func clear_log() -> void:
 	log_entries.clear()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("S"):
+	if event.is_action_pressed("T") && !first_t_recorded:
 		first_t_recorded = true
 		last_t_time_ms = Time.get_ticks_msec()
 		record_interaction("Scanning Start Time", true, 0.0, 0.0)
