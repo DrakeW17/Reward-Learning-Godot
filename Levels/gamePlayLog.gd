@@ -59,7 +59,7 @@ func _write_entry(entry: Dictionary) -> void:
 		return
 	file.seek_end()
 	if not header_written:
-		file.store_line("timestamp,time_since_last_T,interaction_type,success,reaction_time,reward_amount,t_arrived_at_npc,t_npc_emerge,t_anticipatory_start,t_anticipatory_end,t_outcome_animation,t_hit_or_miss")
+		file.store_line("timestamp,time_since_last_T,interaction_type,success,reaction_time,reward_amount,t_arrived_at_npc,t_npc_emerge,t_anticipatory_start,t_anticipatory_end,t_hit_or_miss")
 		header_written = true
 	file.store_line("%s,%s,%s,%s,%.3f,%s,%s,%s,%s,%s,%s" % [
 		entry.timestamp, entry.time_since_last_T, entry.interaction_type, entry.success, entry.reaction_time, entry.reward_amount,
@@ -71,12 +71,12 @@ func clear_log() -> void:
 	log_entries.clear()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("T") && !first_t_recorded:
+	if event.is_action_pressed("S"):
 		first_t_recorded = true
 		last_t_time_ms = Time.get_ticks_msec()
 		record_interaction("Scanning Start Time", true, 0.0, 0.0)
 		PauseManager.start_auto_pause_timer() # NEW: starts the 8-minute countdown from this exact moment
-
+		print("timer started in gamePlayLog")
 func get_success_percentage() -> float:
 	var real_interactions = log_entries.filter(func(e): return e.interaction_type != "Scanning Start Time")
 	if real_interactions.is_empty():
@@ -116,4 +116,4 @@ func _write_final_summary() -> void:
 	file.store_line("%s,%.1f,%d,%.4f,%.2f" % [get_precise_timestamp(), successRate, npcIndex, finalReactionTime, finalEarnings])
 	file.close()
 
-	print("GameplayLog: session summary written -- success rate: %.1f%%, final index: %d, final reactionTime: %.4f, final earnings: $%.2f" % [successRate, npcIndex, finalReactionTime, finalEarnings])
+	print("GameplayLog: session summary written -- success rate: %.1f%%, final index: %d, final reaction time: %.4f, final earnings: $%.2f" % [successRate, npcIndex, finalReactionTime, finalEarnings])
