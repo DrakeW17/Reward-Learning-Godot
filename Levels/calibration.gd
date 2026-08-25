@@ -15,6 +15,8 @@ func _ready() -> void:
 		add_child(transitionInstance)
 	_set_calibration_labels()
 	DataManager.start_precalibration()
+	PauseManager.start_auto_pause_timer() # NEW: 8-minute auto-pause starts as soon as calibration begins
+
 func _set_calibration_labels() -> void:
 	for interaction in DataManager.placedInteractions:
 		interaction.NPC.Set(DataManager._calibration_npc_label())

@@ -26,12 +26,6 @@ func _ready() -> void:
 	fade_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func _unhandled_input(event: InputEvent) -> void:
-	if waiting_for_unlock and event.is_action_pressed("unlock_pause"):
-		waiting_for_unlock = false
-		prompt_label.text = "Press forward to continue"
-		waiting_for_input = true
-		return
-
 	if waiting_for_input and event.is_action_pressed("move_right"):
 		waiting_for_input = false
 		resume_pressed.emit()
@@ -54,7 +48,7 @@ func fade_out() -> void:
 		earnings_label.text = "Earnings: $%.2f" % (player.score / 100.0)
 
 	reaction_time_label.visible = true
-	reaction_time_label.text = "Reaction window: %.3fs" % DataManager.reactionTime
+	reaction_time_label.text = "Reaction Time: %.3fs" % DataManager.reactionTime
 
 
 	percentage_label.visible = true

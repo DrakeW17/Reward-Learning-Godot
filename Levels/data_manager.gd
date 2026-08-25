@@ -57,7 +57,6 @@ var npcIndex = 0
 
 func set_starting_index(index: int) -> void:
 	npcIndex = index
-	print("Starting NPC index set to: ", npcIndex)
 
 func _next_npc_label() -> String:
 	var label = npcLabels[npcIndex]
@@ -88,12 +87,12 @@ func register_calibration_result(success: bool) -> void:
 		return
 
 	calibrationTrialCount += 1
+	var baseStep = reactionTime * 0.1 # 1/10 of current window
 
-	if isPrecalibrating:
-		currentScale = max(precalMinScale, currentScale * precalDecayRate)
-
-	var stepUp = STEP_RATIO_UP * currentScale
-	var stepDown = STEP_RATIO_DOWN * currentScale
+	# Kaernbach (1991) weighted up-down: step ratio calibrated so P(success) = 0.66 at equilibrium
+	# step_up / step_down = p / (1-p) = 0.66 / 0.34 ≈ 1.941
+	var stepDown = baseStep * (2.0 * 0.34) # ≈ 0.68 * baseStep
+	var stepUp = baseStep * (2.0 * 0.66)   # ≈ 1.32 * baseStep
 
 	if success:
 		reactionTime = max(MIN_WINDOW, reactionTime - stepDown)
@@ -102,11 +101,9 @@ func register_calibration_result(success: bool) -> void:
 
 	if isPrecalibrating and calibrationTrialCount > 5:
 		windowHistory.append(reactionTime)
-
 		
 # --- Main game: flat, small fixed step, continues from calibrated reactionTime ---
 func start_main_game_tracking() -> void:
-	print("Main game tracking started from reactionTime: ", reactionTime)
 	calibrating = true
 	isPrecalibrating = false
 	isMainGameTracking = true

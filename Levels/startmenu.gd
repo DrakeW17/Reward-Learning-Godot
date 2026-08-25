@@ -64,12 +64,9 @@ func _on_reaction_time_submitted(text: String) -> void:
 	
 func _on_starting_amount_submitted(text: String) -> void:
 	var dollars = float(text)
-	if dollars > 0.0:
-		DataManager.startingBalanceCents = int(round(dollars * 100))
-		print("Starting balance set to: $", dollars, " (", DataManager.startingBalanceCents, " cents)")
-	else:
-		print("Invalid starting amount entered, keeping default: ", DataManager.startingBalanceCents, " cents")
-
+	DataManager.startingBalanceCents = int(round(dollars * 100))
+	print("Starting balance set to: $", dollars, " (", DataManager.startingBalanceCents, " cents)")
+	
 	reactionTimeInput.visible = false
 	_mainGamePending = true
 	blackOverlay.visible = true

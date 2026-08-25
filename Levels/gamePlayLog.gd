@@ -75,6 +75,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		first_t_recorded = true
 		last_t_time_ms = Time.get_ticks_msec()
 		record_interaction("Scanning Start Time", true, 0.0, 0.0)
+		PauseManager.start_auto_pause_timer() # NEW: starts the 8-minute countdown from this exact moment
 
 func get_success_percentage() -> float:
 	var real_interactions = log_entries.filter(func(e): return e.interaction_type != "Scanning Start Time")

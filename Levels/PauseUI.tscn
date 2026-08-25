@@ -1023,6 +1023,7 @@ cache/0/25/0/glyphs/74/texture_idx = 0
 
 [node name="CanvasLayer" type="CanvasLayer" unique_id=263426877]
 process_mode = 3
+layer = 10
 script = ExtResource("1_3ko1q")
 
 [node name="FadeOverlay" type="ColorRect" parent="." unique_id=9138959]

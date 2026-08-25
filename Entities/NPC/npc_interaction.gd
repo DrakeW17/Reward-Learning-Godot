@@ -234,7 +234,6 @@ func _on_anticipatory_delay_timer_timeout() -> void:
 	if deathTimerOverride == -1:
 		deathTimer.start(DataManager.reactionTime)
 	elif deathTimerOverride >= 0:
-		print(deathTimerOverride)
 		deathTimer.start(0.1)
 	t_anticipatory_end = GamePlayLog.get_precise_timestamp()
 	sprites[type].play("flash")
