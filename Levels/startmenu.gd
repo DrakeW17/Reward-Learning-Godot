@@ -32,9 +32,11 @@ func _ready() -> void:
 	startingAmountInput.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("T") and waiting_for_main_game_start == false and _mainGamePending:
+	if event.is_action_pressed("T") and _mainGamePending:
 		waiting_for_main_game_start = true
-		print("Scan sync received, waiting for experimenter to press S")
+		print("Scan sync received, starting game!")
+		_launch_main_game()
+
 		return
 	if event.is_action_pressed("start") and waiting_for_main_game_start:
 		waiting_for_main_game_start = false

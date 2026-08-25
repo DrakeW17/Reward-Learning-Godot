@@ -7,12 +7,7 @@ func _ready() -> void:
 	add_child(pause_ui)
 	pause_ui.visible = false
 	pause_ui.resume_pressed.connect(_on_resume_pressed)
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("manual_pause"):
-		get_tree().paused = true
-		_set_hud_visible(false)
-		pause_ui.fade_out()
+	
 
 func _on_resume_pressed() -> void:
 	pause_ui.start_countdown()
