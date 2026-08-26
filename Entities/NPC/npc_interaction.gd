@@ -135,7 +135,7 @@ func _on_death_timer_timeout() -> void:
 	reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
 	#if not DataManager.calibrating:
 	GamePlayLog.record_interaction(outcomeNames[type], false, 0, potentialReward, t_bush_interact, t_emerge, t_anticipatory_start, t_anticipatory_end, t_hit_or_miss)
-	DataManager.register_calibration_result(false)
+	DataManager.register_calibration_result(false, type)
 	interacted = -1
 	letPlayerMove()
 
@@ -187,7 +187,7 @@ func _on_success() -> void:
 	reactionTime = (Time.get_ticks_msec() / 1000.0) - flashStartTime
 	
 	GamePlayLog.record_interaction(outcomeNames[type], true, reactionTime, potentialReward, t_bush_interact, t_emerge, t_anticipatory_start, t_anticipatory_end, t_hit_or_miss)
-	DataManager.register_calibration_result(true)
+	DataManager.register_calibration_result(true, type)
 		
 
 
@@ -217,7 +217,7 @@ func _on_false_start() -> void:
 	reactionTime = -1.0 # or 0, however you want to flag "pressed too early" in the log
 	#if not DataManager.calibrating:
 	GamePlayLog.record_interaction(outcomeNames[type], false, reactionTime, potentialReward, t_bush_interact, t_emerge, t_anticipatory_start, t_anticipatory_end, t_hit_or_miss)
-	DataManager.register_calibration_result(false)
+	DataManager.register_calibration_result(false, type)
 	letPlayerMove()
 
 

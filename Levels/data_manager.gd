@@ -82,8 +82,10 @@ func start_calibration() -> void:
 	windowHistory.clear()
 	reactionTime = 1.0
 
-func register_calibration_result(success: bool) -> void:
+func register_calibration_result(success: bool,  npcType: int = -1) -> void:
 	if not calibrating:
+		return
+	if npcType == 1: # archer/neutral -- skip calibration entirely
 		return
 
 	calibrationTrialCount += 1

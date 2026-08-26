@@ -85,12 +85,12 @@ visible_characters = 0
 visible_ratio = 0.0
 
 [node name="ArcherInstructions" type="RichTextLabel" parent="." unique_id=1580744741]
-offset_left = 1264.0
-offset_top = -88.0
-offset_right = 1453.0
-offset_bottom = -51.0
+offset_left = 1255.0
+offset_top = -94.0
+offset_right = 1460.0
+offset_bottom = -42.0
 theme_override_fonts/normal_font = ExtResource("5_uio28")
-text = "Archers won't do anything, whether you interact with them or not"
+text = "Archers are neutral — no coins won or lost. Still try to hit them when they flash, just like the others!"
 visible_characters = 0
 visible_ratio = 0.0
 
